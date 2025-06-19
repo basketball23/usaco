@@ -45,7 +45,7 @@ int main() {
                 max_cows = max(max_cows, num_cows);
             }
         }
-    }
+    } 
 
     // output result
     fout << max_cows << endl;
