@@ -13,7 +13,7 @@ void flood(int r, int c) {
     if (r < 0 || r >= N || c < 0 || c >= N || grid[r][c] == '.' || visited[r][c] == true) {
         return;
     }
-    
+
     visited[r][c] = true;
 
     current_area++;
@@ -32,7 +32,6 @@ int main() {
     ifstream fin("perimeter.in");
     ofstream fout("perimeter.out");
 
-    int N;
     fin >> N;
 
     grid.resize(N, vector<char>(N));
@@ -60,7 +59,6 @@ int main() {
                 }
             }
         }
-
     }
 
     fout << max_area << " " << perimeter << endl;
