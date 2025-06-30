@@ -18,7 +18,7 @@ void dfs(int node, int val) {
             impossible = true;
         }
         if (visited[n] == 0) {
-            dfs(n, 3 - val);
+            dfs(n, val);
         }
     }
 
