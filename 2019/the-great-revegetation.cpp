@@ -9,24 +9,25 @@ vector<vector<int>> adjS;
 vector<vector<int>> adjD;
 vector<int> visited;
 int answer = 0;
-bool impossible;
+bool impossible = false;
 
 void dfs(int node, int val) {
     visited[node] = val;
-    for (int i : adjS[node]) {
-
-        if (visited[i] == 3 - val) {
+    for (int n : adjS[node]) {
+        if (visited[n] == 3 - val) {
             impossible = true;
-        } else if (visited[i] == 0) {
-            dfs(i, 3 - val);
+        }
+        if (visited[n] == 0) {
+            dfs(n, 3 - val);
         }
     }
-    for (int i : adjD[node]) {
 
-        if (visited[i] == val) {
+    for (int n : adjD[node]) {
+        if (visited[n] == val) {
             impossible = true;
-        } else if (visited[i] == 0) {
-            dfs(i, 3 - val);
+        }
+        if (visited[n] == 0) {
+            dfs(n, 3 - val);
         }
     }
 }
@@ -37,6 +38,10 @@ int main() {
 
     int N, M;
     fin >> N >> M;
+
+    adjS.resize(N + 1);
+    adjD.resize(N + 1);
+    visited.resize(N + 1);
 
     for (int i = 0; i < M; i++) {
         string type;
@@ -49,7 +54,7 @@ int main() {
         }
     }
 
-    for (int i = i; i <= N; i++) {
+    for (int i = 1; i <= N; i++) {
         if (!visited[i]) {
             dfs(i, 1);
             answer++;
