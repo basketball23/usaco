@@ -17,7 +17,7 @@ int main() {
 
     fin >> N >> K >> R;
 
-    grid.resize(N, vector<int>(N));
+    grid.resize(N, vector<int>(N, 0));
     visited.resize(N, vector<bool>(N, false));
 
 
@@ -26,5 +26,13 @@ int main() {
         fin >> a >> b >> c >> d;
         adjMap[{a, b}].push_back({c, d});
     }
+
+    for (int i = 0; i < K; i++) {
+        int x_val, y_val;
+        fin >> x_val >> y_val;
+        grid[x_val][y_val] = 1;
+    }
+
+    
 
 }
