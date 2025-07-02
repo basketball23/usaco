@@ -10,12 +10,12 @@ vector<vector<char>> grid;
 vector<vector<char>> current_PCL;
 vector<vector<int>> coordinates_PCL;
 /*
-SAVE PCLS AS 4 COORDINATES MAKING THE RECTANGLE
+SAVE PCLS AS TOP LEFT BOTTOM RIGHT COORDINATES MAKING THE RECTANGLE
 THIS ALLOWS FOR CHECKING IF A PCL IS A SUBPCL, WHICH DOESN'T COUNT 
 */
 
 void flood(int r, int c) {
-    if (r >= N || c >= N || /* add check for exceeding 2 characters*/) {
+    if (r >= N || c >= N /* add check for exceeding 2 characters*/) {
         return;
     }
 
@@ -38,6 +38,12 @@ int main() {
             char c;
             fin >> c;
             grid[i][j] = c;
+        }
+    }
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            flood(i, j);
         }
     }
 
