@@ -14,7 +14,7 @@ vector<vector<int>> grid;
 vector<vector<bool>> visited;
 
 void flood(int r, int c) {
-    
+
     if(r < 0 || r >= N || c < 0 || c >= N || visited[r][c] == true) {
         return;
     }
@@ -34,17 +34,17 @@ void flood(int r, int c) {
         flood(r - 1, c);
     }
     target_pair = {r + 1, c};
-    auto it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
+    it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
     if (it == adj_map[{r, c}].end()) {
         flood(r + 1, c);
     }
     target_pair = {r, c - 1};
-    auto it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
+    it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
     if (it == adj_map[{r, c}].end()) {
         flood(r, c - 1);
     }
     target_pair = {r, c + 1};
-    auto it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
+    it = find(adj_map[{r, c}].begin(), adj_map[{r, c}].end(), target_pair);
     if (it == adj_map[{r, c}].end()) {
         flood(r, c + 1);
     }
