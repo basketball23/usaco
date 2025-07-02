@@ -13,6 +13,9 @@ vector<vector<int>> grid;
 vector<vector<bool>> visited;
 
 void flood(int r, int c) {
+    /*
+    Recursive flood DFS function to find close pairs
+    */
 
     if(r < 0 || r >= N || c < 0 || c >= N || visited[r][c] == true) {
         return;
@@ -52,6 +55,7 @@ int main() {
     ifstream fin("countcross.in");
     ofstream fout("countcross.out");
 
+    // Inputting
     fin >> N >> K >> R;
 
     grid.resize(N, vector<int>(N, 0));
@@ -73,6 +77,7 @@ int main() {
         grid[x_val][y_val] = 1;
     }
 
+    // Iterating through each cow start point
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             if (grid[i][j] == 1) {
@@ -84,6 +89,7 @@ int main() {
         }
     }
 
+    // Answer output
     total_pairs = (K * (K - 1))/2;
     close_pairs /= 2;
     distant_pairs = total_pairs - close_pairs;
