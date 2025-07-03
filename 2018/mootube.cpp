@@ -11,6 +11,10 @@ vector<int> video_suggestions;
 vector<bool> visited;
 
 void dfs(int node, int min_relevance) {
+    /*
+    DFS with each query video as the root
+    Recurse through the tree and sum the video count as you go
+    */
     visited[node] = true;
 
     for (auto& i : connections[node]) {
@@ -27,10 +31,12 @@ int main() {
 
     fin >> N >> Q;
 
+    // resizing
     connections.resize(N);
     video_suggestions.resize(Q, 0);
     visited.resize(N, false);
 
+    // inputting
     for (int i = 0; i < N - 1; i++) {
         int p, q, r;
         fin >> p >> q >> r;
@@ -41,6 +47,7 @@ int main() {
         connections[q].push_back({p, r});
     }
 
+    // iterate through each query and DFS
     for (int i = 0; i < Q; i++) {
         int k, v;
         fin >> k >> v;
@@ -54,6 +61,7 @@ int main() {
         video_suggestions[i] = video_count;
     }
 
+    // output
     for (int i = 0; i < video_suggestions.size(); i++) {
         fout << video_suggestions[i] << endl;
     }
