@@ -10,18 +10,14 @@ vector<vector<pair<int, int>>> connections;
 vector<int> video_suggestions;
 vector<bool> visited;
 
-void dfs(int node, int current_depth, int min_relevance) {
-
+void dfs(int node, int min_relevance) {
     visited[node] = true;
 
-    for (auto i : connections[node]) {
-        if (current_depth + i.second >= min_relevance) {
+    for (auto& i : connections[node]) {
+        if (!visited[i.first] && i.second >= min_relevance) {
             video_count++;
+            dfs(i.first, min_relevance);
         }
-        if (visited[i.first] == false) {
-            dfs(i.first, current_depth + i.second, min_relevance);
-        }
-
     }
 }
 
@@ -31,13 +27,15 @@ int main() {
 
     fin >> N >> Q;
 
-    connections.resize(N, vector<pair<int, int>>(N));
+    connections.resize(N);
     video_suggestions.resize(Q, 0);
     visited.resize(N, false);
 
     for (int i = 0; i < N - 1; i++) {
         int p, q, r;
-        cin >> p >> q >> r;
+        fin >> p >> q >> r;
+
+        p--; q--;
 
         connections[p].push_back({q, r});
         connections[q].push_back({p, r});
@@ -48,18 +46,15 @@ int main() {
         fin >> k >> v;
         int relevance = k;
 
+        v--;
         video_count = 0;
         fill(visited.begin(), visited.end(), false);
 
-        dfs(v, 0,relevance);
+        dfs(v, relevance);
         video_suggestions[i] = video_count;
     }
 
     for (int i = 0; i < video_suggestions.size(); i++) {
-        fout << video_suggestions[i];
-        if (i != video_suggestions.size() - 1) {
-            fout << " ";
-        }
+        fout << video_suggestions[i] << endl;
     }
-    fout << endl;
 }
