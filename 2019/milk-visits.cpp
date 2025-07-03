@@ -7,22 +7,33 @@ using namespace std;
 vector<char> cow_breeds;
 vector<vector<int>> road_connections;
 vector<int> answers;
+vector<bool> visited;
+vector<int> path;
 bool found = false;
 
-vector<int> dfs(int farm_node, vector<int> path, int target) {
+void dfs(int farm, int target) {
     if (found) {
-        return path;
+        return;
     }
-    for (int x : road_connections[farm_node]) {
-        if (x == target) {
-            found = true;
-            return path;
-        } else {
-            path.push_back(x);
-            dfs(x, path, target);
-            path.pop_back();
+
+    visited[farm] = true;
+    path.push_back(farm);
+
+    if (farm == target) {
+        found = true;
+        return;
+    }
+
+    for (int x : road_connections[farm]) {
+        if (!visited[x]) {
+            dfs(x, target);
+            if (found) {
+                return;
+            }
         }
     }
+
+    path.pop_back();
 }
 
 int main() {
@@ -37,17 +48,17 @@ int main() {
     cow_breeds.resize(N);
     road_connections.resize(N);
     answers.resize(M, 0);
+    visited.resize(N, false);
 
     for (int i = 0; i < N; i++) {
-        char breed;
-        fin >> breed;
-
-        cow_breeds[i] = breed;
+        fin >> cow_breeds[i];
     }
 
     for (int i = 0; i < N - 1; i++) {
         int X, Y;
         fin >> X >> Y;
+
+        X--; Y--;
 
         road_connections[X].push_back(Y);
         road_connections[Y].push_back(X);
@@ -58,22 +69,19 @@ int main() {
         char C;
         fin >> A >> B >> C;
 
-        vector<int> travel_path;
+        A--; B--;
+
+        path.clear();
         found = false;
+        fill(visited.begin(), visited.end(), false);
 
-        vector<int> final_path = dfs(A, travel_path, B);
+        dfs(A, B);
 
-        bool happy = false;
-        for (int n : final_path) {
-            if (cow_breeds[n] == C) {
-                happy = true;
+        for (int node : path) {
+            if (cow_breeds[node] == C) {
+                answers[i] = 1;
                 break;
             }
-        }
-        if (happy) {
-            answers[i] == 1;
-        } else {
-            answers[i] == 0;
         }
     }
 
