@@ -13,14 +13,13 @@ vector<bool> visited;
 void dfs(int node, int current_depth, int min_relevance) {
 
     visited[node] = true;
-    current_depth += i.second;
 
     for (auto i : connections[node]) {
-        if (current_depth >= min_relevance) {
+        if (current_depth + i.second >= min_relevance) {
             video_count++;
         }
         if (visited[i.first] == false) {
-            dfs(i.first, current_depth, min_relevance);
+            dfs(i.first, current_depth + i.second, min_relevance);
         }
 
     }
@@ -52,6 +51,15 @@ int main() {
         video_count = 0;
         fill(visited.begin(), visited.end(), false);
 
-
+        dfs(v, 0,relevance);
+        video_suggestions[i] = video_count;
     }
+
+    for (int i = 0; i < video_suggestions.size(); i++) {
+        fout << video_suggestions[i];
+        if (i != video_suggestions.size() - 1) {
+            fout << " ";
+        }
+    }
+    fout << endl;
 }
