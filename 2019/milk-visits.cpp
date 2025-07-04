@@ -12,6 +12,9 @@ vector<int> path;
 bool found = false;
 
 void dfs(int farm, int target) {
+    /*
+    dfs function
+    */
     if (found) {
         return;
     }
@@ -50,6 +53,7 @@ int main() {
     answers.resize(M, 0);
     visited.resize(N, false);
 
+    // inputting
     for (int i = 0; i < N; i++) {
         fin >> cow_breeds[i];
     }
@@ -63,7 +67,9 @@ int main() {
         road_connections[X].push_back(Y);
         road_connections[Y].push_back(X);
     }
-    
+
+
+    // main logic
     for (int i = 0; i < M; i++) {
         int A, B;
         char C;
