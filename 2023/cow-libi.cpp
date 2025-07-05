@@ -46,36 +46,12 @@ int main() {
 
         bool success = false;
         int travel_time;
-        int idx = binary_search(t);
-
-        if ((t - grazing_times[idx - 1]) < grazing_times[idx] - t) {
-            idx--;
-            travel_time = t - grazing_times[idx];
-
-            if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) > pow(travel_time, 2)) {
-                valid_alibis++;
-            }
-
-        } else if ((t - grazing_times[idx - 1]) > grazing_times[idx] - t) {
-            travel_time = grazing_times[idx] - t;
-
-            if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) > pow(travel_time, 2)) {
-                valid_alibis++;
-            }
-
-        } else if ((t - grazing_times[idx - 1]) == grazing_times[idx] - t) {
-            if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) > pow(travel_time, 2)) {
-                valid_alibis++;
-                success = true;
-            }
-            if (!success) {
-                idx--;
-                if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) > pow(travel_time, 2)) {
-                    valid_alibis++;
-                }
-            }
-        }
+        int upper = binary_search(t);
+        int lower = upper - 1;
         
+        if (pow(x - grazing_locations[grazing_times[upper]].first, 2) + pow(y - grazing_locations[grazing_times[upper]].second, 2) > pow(grazing_times[upper] - t, 2) || pow(x - grazing_locations[grazing_times[lower]].first, 2) + pow(y - grazing_locations[grazing_times[lower]].second, 2) > pow(grazing_times[lower] - t, 2)) {
+            valid_alibis++;
+        }
     }
 
     cout << valid_alibis << endl;
