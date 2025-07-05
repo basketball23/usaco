@@ -49,12 +49,12 @@ int main() {
 
         if ((t - grazing_times[idx - 1]) < grazing_times[idx] - t) {
             idx--;
-            travel_time = (t - grazing_times[idx - 1]);
+            travel_time = t - grazing_times[idx];
         } else {
             travel_time = grazing_times[idx] - t;
         }
 
-        if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) >= pow(travel_time, 2)) {
+        if (pow(x - grazing_locations[grazing_times[idx]].first, 2) + pow(y - grazing_locations[grazing_times[idx]].second, 2) > pow(travel_time, 2)) {
             valid_alibis++;
         }
     }
