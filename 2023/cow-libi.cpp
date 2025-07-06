@@ -22,13 +22,13 @@ long long squared(int x) {
     return (long long)x * x;
 }
 
-int binary_search_grazing_events(int target_t) {
+int binary_search_grazing_events(int target) {
     int lo = 0;
     int hi = grazings.size();
 
     while (lo < hi) {
         int mid = lo + (hi - lo) / 2;
-        if (grazings[mid].t <= target_t) {
+        if (grazings[mid].t <= target) {
             lo = mid + 1;
         } else {
             hi = mid;
