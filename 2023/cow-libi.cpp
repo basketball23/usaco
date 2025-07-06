@@ -3,7 +3,6 @@
 #include <map>
 #include <utility>
 #include <algorithm>
-#include <cmath>
 
 using namespace std;
 
@@ -11,6 +10,10 @@ vector<int> grazing_times;
 map<int, pair<int, int>> grazing_locations;
 
 int valid_alibis = 0;
+
+long long squared(int x) {
+    return x * x;
+}
 
 int binary_search(int target) {
     int lo = 0;
@@ -32,10 +35,12 @@ int main() {
 
     cin >> G >> N;
 
+    grazing_times.resize(G, 0);
+
     for (int i = 0; i < G; i++) {
         cin >> x >> y >> t;
 
-        grazing_times.push_back(t);
+        grazing_times[i] = t;
         grazing_locations[t] = {x, y};
     }
 
@@ -44,13 +49,22 @@ int main() {
     for (int i = 0; i < N; i++) {
         cin >> x >> y >> t;
 
-        bool success = false;
-        int travel_time;
         int upper = binary_search(t);
         int lower = upper - 1;
-        
-        if (pow(x - grazing_locations[grazing_times[upper]].first, 2) + pow(y - grazing_locations[grazing_times[upper]].second, 2) > pow(grazing_times[upper] - t, 2) || pow(x - grazing_locations[grazing_times[lower]].first, 2) + pow(y - grazing_locations[grazing_times[lower]].second, 2) > pow(grazing_times[lower] - t, 2)) {
-            valid_alibis++;
+
+        if (lower < 0) {
+            if (squared(x - grazing_locations[grazing_times[upper]].first) + squared(y - grazing_locations[grazing_times[upper]].second) > squared(grazing_times[upper] - t)) {
+                valid_alibis++;
+            }
+        } else if (upper > grazing_times.size() - 1) {
+            if (squared(x - grazing_locations[grazing_times[lower]].first) + squared(y - grazing_locations[grazing_times[lower]].second) > squared(grazing_times[lower] - t)) {
+                valid_alibis++;
+            }
+        } else {
+            if (squared(x - grazing_locations[grazing_times[upper]].first) + squared(y - grazing_locations[grazing_times[upper]].second) > squared(grazing_times[upper] - t) 
+            || squared(x - grazing_locations[grazing_times[lower]].first) + squared(y - grazing_locations[grazing_times[lower]].second) > squared(grazing_times[lower] - t)) {
+                valid_alibis++;
+            }
         }
     }
 
