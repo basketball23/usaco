@@ -1,27 +1,34 @@
 #include <iostream>
 #include <vector>
-#include <map>
-#include <utility>
 #include <algorithm>
 
 using namespace std;
 
-vector<int> grazing_times;
-map<int, pair<int, int>> grazing_locations;
+struct GrazingEvent {
+    int t;
+    int x;
+    int y;
+
+    bool operator<(const GrazingEvent& other) const {
+        return t < other.t;
+    }
+};
+
+vector<GrazingEvent> grazings;
 
 int valid_alibis = 0;
 
 long long squared(int x) {
-    return x * x;
+    return (long long)x * x;
 }
 
-int binary_search(int target) {
+int binary_search_grazing_events(int target_t) {
     int lo = 0;
-    int hi = grazing_times.size();
+    int hi = grazings.size();
 
     while (lo < hi) {
-        int mid = ((hi - lo)/2) + lo;
-        if (grazing_times[mid] <= target) {
+        int mid = lo + (hi - lo) / 2;
+        if (grazings[mid].t <= target_t) {
             lo = mid + 1;
         } else {
             hi = mid;
@@ -31,48 +38,55 @@ int binary_search(int target) {
 }
 
 int main() {
-    int G, N, x, y, t;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
+    int G, N;
     cin >> G >> N;
 
-    grazing_times.resize(G, 0);
+    grazings.resize(G);
 
     for (int i = 0; i < G; i++) {
-        cin >> x >> y >> t;
-
-        grazing_times[i] = t;
-        grazing_locations[t] = {x, y};
+        cin >> grazings[i].x >> grazings[i].y >> grazings[i].t;
     }
 
-    sort(grazing_times.begin(), grazing_times.end());
+    sort(grazings.begin(), grazings.end());
 
     for (int i = 0; i < N; i++) {
-        cin >> x >> y >> t;
+        int cow_x, cow_y, cow_t;
+        cin >> cow_x >> cow_y >> cow_t;
 
-        int upper = binary_search(t);
-        int lower = upper - 1;
+        int upper_idx = binary_search_grazing_events(cow_t);
+        int lower_idx = upper_idx - 1;
 
-        if (lower < 0) {
-            if (squared(x - grazing_locations[grazing_times[upper]].first) + squared(y - grazing_locations[grazing_times[upper]].second) > squared(grazing_times[upper] - t)) {
-                valid_alibis++;
+        bool is_innocent = false;
+
+        if (upper_idx < grazings.size()) {
+            const GrazingEvent& g_upper = grazings[upper_idx];
+            long long dist_sq = squared(cow_x - g_upper.x) + squared(cow_y - g_upper.y);
+            long long time_diff_sq = squared(g_upper.t - cow_t);
+
+            if (dist_sq > time_diff_sq) {
+                is_innocent = true;
             }
-        } else if (upper > grazing_times.size() - 1) {
-            if (squared(x - grazing_locations[grazing_times[lower]].first) + squared(y - grazing_locations[grazing_times[lower]].second) > squared(grazing_times[lower] - t)) {
-                valid_alibis++;
+        }
+
+        if (!is_innocent && lower_idx >= 0) {
+            const GrazingEvent& g_lower = grazings[lower_idx];
+            long long dist_sq = squared(cow_x - g_lower.x) + squared(cow_y - g_lower.y);
+            long long time_diff_sq = squared(g_lower.t - cow_t);
+
+            if (dist_sq > time_diff_sq) {
+                is_innocent = true;
             }
-        } else {
-            if (squared(x - grazing_locations[grazing_times[upper]].first) + squared(y - grazing_locations[grazing_times[upper]].second) > squared(grazing_times[upper] - t) 
-            || squared(x - grazing_locations[grazing_times[lower]].first) + squared(y - grazing_locations[grazing_times[lower]].second) > squared(grazing_times[lower] - t)) {
-                valid_alibis++;
-            }
+        }
+        
+        if (is_innocent) {
+            valid_alibis++;
         }
     }
 
     cout << valid_alibis << endl;
 
+    return 0;
 }
-/*
-perform binary search on the times of each cow 
-compared to the sorted array of each grazing incident
-judge if the cow can make it to the grazing of closest time to find the answer
-*/
