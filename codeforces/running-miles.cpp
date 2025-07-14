@@ -3,24 +3,33 @@
 
 using namespace std;
 
-vector<int> sight_beauties;
+void solve() {
+    int n; cin >> n;
+    vector<int> b(n), L(n), R(n);
+    for(auto &e:b) cin >> e;
+    
+    // Finding best (b[l] - (i-l)) for each 'i' greedily
+    for (int i = 1; i < n; i++) {
+        L[i] = max(L[i-1] - 1, b[i-1] - 1);  // Prefix maximum?
+    }
+    // Finding best (b[r] - (r-i)) for each 'i' greedily
+    for (int i=n-2; i>=0; i--)
+        R[i] = max(R[i+1] - 1, b[i+1] - 1);  // Suffix maximum?
+    
+    // Answer is the maximum L[i] + b[i] + R[i] we can find
+    int ans = 0;
+    for (int i=1; i<n-1; i++)
+        ans = max(ans, L[i] + b[i] + R[i]);
+    
+    cout << ans << '\n';
+}
 
 int main() {
-    int testcases;
-    cin >> testcases;
-
-    for (int i = 0; i < testcases; i++) {
-        int n;
-        cin >> n;
-
-        sight_beauties.assign(n, 0);
-
-        for (int j = 0; j < n; j++) {
-            int x;
-            cin >> sight_beauties[j];
-        }
-
-        
-
-    }
+    //freopen(".in", "r", stdin);
+    //freopen(".out", "w", stdout);
+    //ios_base::sync_with_stdio(0);cin.tie(0);
+    int t; cin>>t; while(t--)
+    solve();
+    
+    return 0;
 }
