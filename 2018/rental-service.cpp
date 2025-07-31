@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <utility>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ int main() {
     ofstream fout("rental.out");
 
     int N, M, R;
+    long long max_profit = 0;
 
     vector<int> milk_production;
     vector<pair<int, int>> store_purchases;
@@ -33,6 +35,18 @@ int main() {
         int r;
         fin >> r;
         farmer_rentals.push_back(r);
+    }
+
+    // Start here by sorting the cow data by milk production
+    // Then sort by customer demand and pricing
+    // GREEDY
+
+    sort(milk_production.begin(), milk_production.end());
+    sort(store_purchases.begin(), store_purchases.end());
+    sort(farmer_rentals.begin(), farmer_rentals.end());
+
+    while (!milk_production.empty() && (!store_purchases.empty() || !farmer_rentals.empty())) {
+        
     }
 
 
