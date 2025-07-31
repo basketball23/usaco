@@ -12,6 +12,7 @@ int main() {
 
     int N, M, R;
     long long max_profit = 0;
+    int milk_gallons = 0;
 
     vector<int> milk_production;
     vector<pair<int, int>> store_purchases;
@@ -28,7 +29,7 @@ int main() {
     for (int i = 0; i < M; i++) {
         int q, p;
         fin >> q >> p;
-        store_purchases.push_back({q, p});
+        store_purchases.push_back({p, q});
     }
 
     for (int i = 0; i < R; i++) {
@@ -45,8 +46,25 @@ int main() {
     sort(store_purchases.begin(), store_purchases.end());
     sort(farmer_rentals.begin(), farmer_rentals.end());
 
+    int milk_index = milk_production.size() - 1;
+    int purchase_index = store_purchases.size() - 1;
+    int rental_index = farmer_rentals.size() - 1;
+
+
     while (!milk_production.empty() && (!store_purchases.empty() || !farmer_rentals.empty())) {
+        int gal = min(milk_production[milk_index] + milk_gallons, store_purchases[purchase_index].second);
         
+        if ((gal * store_purchases[purchase_index].first) > farmer_rentals[rental_index]) {
+            milk_gallons += milk_production[milk_index];
+
+            milk_gallons -= gal;
+            max_profit += gal * store_purchases[purchase_index].first;
+
+            milk_production.pop_back();
+            store_purchases.pop_back();
+            milk_index--;
+            purchase_index--;
+        }
     }
 
 
