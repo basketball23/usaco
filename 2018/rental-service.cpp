@@ -52,20 +52,46 @@ int main() {
 
 
     while (!milk_production.empty() && (!store_purchases.empty() || !farmer_rentals.empty())) {
-        int gal = min(milk_production[milk_index] + milk_gallons, store_purchases[purchase_index].second);
-        
+        int gal = store_purchases[purchase_index].second;
+
         if ((gal * store_purchases[purchase_index].first) > farmer_rentals[rental_index]) {
-            milk_gallons += milk_production[milk_index];
+            if (milk_gallons < gal) {
+                milk_gallons += milk_production[milk_index];
+                milk_production.pop_back();
+                milk_index--;
+            }
+            
+            if (milk_gallons >= gal) {
+                max_profit += gal * store_purchases[purchase_index].first;
+            } else {
+                max_profit += gal * milk_gallons;
+            }
+            
+            //debug
+            fout << gal * store_purchases[purchase_index].first << "|store| ";
+            //debug
 
-            milk_gallons -= gal;
-            max_profit += gal * store_purchases[purchase_index].first;
+            if (milk_gallons - gal > 0) {
+                milk_gallons -= gal;
+            } else {
+                milk_gallons = 0;
+            }
 
-            milk_production.pop_back();
             store_purchases.pop_back();
-            milk_index--;
             purchase_index--;
+        } else {
+            max_profit += farmer_rentals[rental_index];
+
+            //debug
+            fout << farmer_rentals[rental_index] << "|rental| ";
+            //debug
+
+            milk_production.erase(milk_production.begin());
+            farmer_rentals.pop_back();
+            milk_index--;
+            rental_index--;
         }
     }
 
-
+    fout << max_profit;
 }
