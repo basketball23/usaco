@@ -14,84 +14,78 @@ int main() {
     long long max_profit = 0;
     int milk_gallons = 0;
 
-    vector<int> milk_production;
-    vector<pair<int, int>> store_purchases;
-    vector<int> farmer_rentals;
+    vector<int> milk(N);
+    vector<pair<int, int>> stores(M);
+    vector<int> rentals(R);
 
     fin >> N >> M >> R;
 
     for (int i = 0; i < N; i++) {
         int c;
         fin >> c;
-        milk_production.push_back(c);
+        milk[i] = c;
     }
 
     for (int i = 0; i < M; i++) {
         int q, p;
         fin >> q >> p;
-        store_purchases.push_back({p, q});
+        stores[i] = {p, q};
     }
 
     for (int i = 0; i < R; i++) {
         int r;
         fin >> r;
-        farmer_rentals.push_back(r);
+        rentals[i] = r;
     }
 
-    // Start here by sorting the cow data by milk production
-    // Then sort by customer demand and pricing
-    // GREEDY
+    sort(milk.begin(), milk.end());
+    sort(stores.begin(), stores.end());        
+    sort(rentals.begin(), rentals.end()); 
+    
+    vector<long long> rental_prefix(N);
+    rental_prefix[0] = milk[0];
+    for (int i = 1; i < N; i++) {
+        rental_prefix[i] = milk[i] + rental_prefix[i - 1];
+    }
 
-    sort(milk_production.begin(), milk_production.end());
-    sort(store_purchases.begin(), store_purchases.end());
-    sort(farmer_rentals.begin(), farmer_rentals.end());
+    reverse(milk.begin(), milk.end());
 
-    int milk_index = milk_production.size() - 1;
-    int purchase_index = store_purchases.size() - 1;
-    int rental_index = farmer_rentals.size() - 1;
+    vector<long long> milk_prefix(N);
+    milk_prefix[0] = milk[0];
+    for (int i = 1; i < N; i++) {
+        milk_prefix[i] = milk[i] + milk_prefix[i - 1];
+    }
 
+    vector<long long> store_prefix(N);
+    for (int i = 0; i < N; i++) {
+        // Milk the first i cows
+        // Store in total milk variable
 
-    while (!milk_production.empty() && (!store_purchases.empty() || !farmer_rentals.empty())) {
-        int gal = store_purchases[purchase_index].second;
+        long long milk_avaliable = milk_prefix[i];
 
-        if ((gal * store_purchases[purchase_index].first) > farmer_rentals[rental_index]) {
-            if (milk_gallons < gal) {
-                milk_gallons += milk_production[milk_index];
-                milk_production.pop_back();
-                milk_index--;
-            }
-            
-            if (milk_gallons >= gal) {
-                max_profit += gal * store_purchases[purchase_index].first;
+        // Fill store order as much as possible
+        // Save as cost
+        
+        // while milk is still avaliable, sell to top price per gallon store
+        int store_idx = M - 1;
+        int price = 0;
+
+        while (milk_avaliable > 0) {
+            if (milk_avaliable > stores[store_idx].second) {
+                milk_avaliable -= stores[store_idx].second;
+
+                price += stores[store_idx].first * stores[store_idx].second;
             } else {
-                max_profit += gal * milk_gallons;
-            }
-            
-            //debug
-            fout << gal * store_purchases[purchase_index].first << "|store| ";
-            //debug
-
-            if (milk_gallons - gal > 0) {
-                milk_gallons -= gal;
-            } else {
-                milk_gallons = 0;
+                price += milk_avaliable * stores[store_idx].second;
+                milk_avaliable = 0;
+                break;
             }
 
-            store_purchases.pop_back();
-            purchase_index--;
-        } else {
-            max_profit += farmer_rentals[rental_index];
-
-            //debug
-            fout << farmer_rentals[rental_index] << "|rental| ";
-            //debug
-
-            milk_production.erase(milk_production.begin());
-            farmer_rentals.pop_back();
-            milk_index--;
-            rental_index--;
+            store_idx--;
         }
+        store_prefix[i] = price;
     }
 
-    fout << max_profit;
+    fout << max_profit << "\n";
+    return 0;
 }
