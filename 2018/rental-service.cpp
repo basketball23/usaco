@@ -14,11 +14,11 @@ int main() {
     long long max_profit = 0;
     int milk_gallons = 0;
 
+    fin >> N >> M >> R;
+
     vector<int> milk(N);
     vector<pair<int, int>> stores(M);
     vector<int> rentals(R);
-
-    fin >> N >> M >> R;
 
     for (int i = 0; i < N; i++) {
         int c;
@@ -38,6 +38,7 @@ int main() {
         rentals[i] = r;
     }
 
+    // sort
     sort(milk.begin(), milk.end());
     sort(stores.begin(), stores.end());        
     sort(rentals.begin(), rentals.end()); 
@@ -84,6 +85,14 @@ int main() {
             store_idx--;
         }
         store_prefix[i] = price;
+    }
+
+    // for each i, calculate i and N - i for store and rental
+    // max() to find if it's larger than currently
+
+    for (int i = 0; i < N; i++) {
+        long long current_profit = rental_prefix[i] + store_prefix[N - 1 - i];
+        max_profit = max(max_profit, current_profit);
     }
 
     fout << max_profit << "\n";
