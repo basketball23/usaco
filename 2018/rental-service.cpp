@@ -91,10 +91,19 @@ int main() {
 
     long long current_profit;
 
+    int rental_cows;
+    if (R < M) {
+        rental_cows = R - 1;
+    } else {
+        rental_cows = M - 1;
+    }
+
     for (int i = 0; i < M; i++) {
-        int rental_cows = R - i - 1;
+        if (i + rental_cows == N) {
+            rental_cows = rental_cows - i;
+        }
         if (rental_cows < 0) {
-            break;
+            rental_cows = 0;
         }
         current_profit = store_prefix[i] + rental_prefix[rental_cows];
         max_profit = max(max_profit, current_profit);
