@@ -47,14 +47,15 @@ int main() {
         limit_list_right.push_back({ymin, ymax});
     }
 
+    reverse(limit_list_right.begin(), limit_list_right.end());
+
     int left_l = cows[0].first, left_r, right_l, right_r = cows[N - 1].first;
 
     for (int i = 0; i < N - 1; i++) {
-        if (i != N - 2) {
-            if (cows[i].first == cows[i + 1].first) {
-                // skip processing x val if duplicates
-                continue;
-            }
+
+        if (cows[i].first == cows[i + 1].first) {
+            // skip processing x val if duplicates
+            continue;
         }
 
         left_r = cows[i].first;
@@ -68,6 +69,6 @@ int main() {
         double_enc_area = min(double_enc_area, current_area);
     }
 
-    fout << (single_enc_area - double_enc_area) << "/n";
+    fout << (single_enc_area - double_enc_area) << "\n";
 
 }
