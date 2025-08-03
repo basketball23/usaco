@@ -92,15 +92,15 @@ int main() {
     long long current_profit;
 
     int rental_cows;
-    if (R < M) {
+    if (R < N) {
         rental_cows = R - 1;
     } else {
-        rental_cows = M - 1;
+        rental_cows = N - 1;
     }
 
     for (int i = 0; i < M; i++) {
-        if (i + rental_cows == N) {
-            rental_cows = rental_cows - i;
+        if (i + rental_cows >= N) {
+            rental_cows -= i;
         }
         if (rental_cows < 0) {
             rental_cows = 0;
