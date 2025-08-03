@@ -7,16 +7,18 @@
 using namespace std;
 
 int main() {
-    ifstream fin("split.in");
-    ofstream fout("split.out");
+    /*
+    ifstream cin("split.in");
+    ofstream cout("split.out");
+    */
 
-    int N; fin >> N;
+    int N; cin >> N;
     int xmax = 0, xmin = 1000000000, ymax = 0, ymin = 1000000000;
     
     vector<pair<int, int>> cows;
 
     for (int i = 0; i < N; i++) {
-        int x, y; fin >> x >> y;
+        int x, y; cin >> x >> y;
         xmax = max(x, xmax); xmin = min(x, xmin); ymax = max(y, ymax); ymin = min(y, ymin);
         cows.push_back({x, y});
     }
@@ -69,6 +71,17 @@ int main() {
         double_enc_area = min(double_enc_area, current_area);
     }
 
-    fout << (single_enc_area - double_enc_area) << "\n";
+    //DEBUG
+    for (int i = 0; i < N; i++) {
+        cout << cows[i].first << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < N; i++) {
+        cout << cows[i].second << " ";
+    }
+    cout << endl;
+    //DEBUG
+
+    cout << (single_enc_area - double_enc_area) << "\n";
 
 }
