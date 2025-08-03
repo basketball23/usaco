@@ -43,10 +43,10 @@ int main() {
     sort(stores.rbegin(), stores.rend());
     sort(rentals.rbegin(), rentals.rend()); 
     
-    vector<long long> rental_prefix(R);
-    rental_prefix[0] = rentals[0];
-    for (int i = 1; i < R; i++) {
-        rental_prefix[i] = rental_prefix[i - 1] + rentals[i];
+    vector<long long> rental_prefix(R + 1);
+    rental_prefix[0] = 0;
+    for (int i = 1; i <= R; i++) {
+        rental_prefix[i] = rental_prefix[i - 1] + rentals[i - 1];
     }
 
     vector<long long> milk_prefix(N);
@@ -55,12 +55,13 @@ int main() {
         milk_prefix[i] = milk_prefix[i - 1] + milk[i];
     }
 
-    vector<long long> store_prefix(M);
-    for (int i = 0; i < M; i++) {
+    vector<long long> store_prefix(M + 1);
+    store_prefix[0] = 0;
+    for (int i = 1; i <= M; i++) {
         // Milk the first i cows
         // Store in total milk variable
 
-        long long milk_avaliable = milk_prefix[i];
+        long long milk_avaliable = milk_prefix[i - 1];
 
         // Fill store order as much as possible
         // Save as cost
@@ -100,7 +101,7 @@ int main() {
 
     for (int i = 0; i < M; i++) {
         if (i + rental_cows >= N) {
-            rental_cows -= i;
+            rental_cows -= 1;
         }
         if (rental_cows < 0) {
             rental_cows = 0;
