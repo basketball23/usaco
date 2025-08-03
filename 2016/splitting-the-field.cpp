@@ -21,20 +21,15 @@ int main() {
         cows.push_back({x, y});
     }
 
-    int single_enc = (xmax - xmin) * (ymax - ymin);
-    int double_enc;
+    int single_enc_area = (xmax - xmin) * (ymax - ymin);
+    int double_enc_area = 2147483647;
 
     // ALGORITHM:
     /*
     Sort points by x coordinate, and check bounding boxes by partitioning at each x-coordinate
     */
 
-
-    // keep a running pair of minimum y
     sort(cows.begin(), cows.end());
-
-    int left_l = cows[0].first, left_r, right_l, right_r = cows[N - 1].first;
-
 
     //create list of min and max y at each x-coordinate
 
@@ -52,6 +47,8 @@ int main() {
         limit_list_right.push_back({ymin, ymax});
     }
 
+    int left_l = cows[0].first, left_r, right_l, right_r = cows[N - 1].first;
+
     for (int i = 0; i < N - 1; i++) {
         if (i != N - 2) {
             if (cows[i].first == cows[i + 1].first) {
@@ -63,10 +60,14 @@ int main() {
         left_r = cows[i].first;
         right_l = cows[i + 1].first;
 
+        int left_area = (left_r - left_l) * (limit_list_left[i].second - limit_list_left[i].first);
+        int right_area = (right_r - right_l) * (limit_list_right[i + 1].second - limit_list_right[i + 1].first);
 
+        int current_area = left_area + right_area;
 
+        double_enc_area = min(double_enc_area, current_area);
     }
 
-    fout << (single_enc - double_enc) << "/n";
+    fout << (single_enc_area - double_enc_area) << "/n";
 
 }
