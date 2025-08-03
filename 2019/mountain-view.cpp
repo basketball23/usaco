@@ -27,14 +27,23 @@ int main() {
 
     distinct.push_back(peaks[0]);
     for (int i = 1; i < N; i++) {
+        bool is_distinct = true;
+
         for (int j = 0; j < distinct.size(); j++) {
-            int x1 = peaks[1].first, y1 = peaks[i].second, x2 = distinct[j].first, y2 = distinct[j].second;
+            int x1 = peaks[i].first, y1 = peaks[i].second, x2 = distinct[j].first, y2 = distinct[j].second;
             int xdiff = x2 - x1, ydiff = y2 - y1;
-            if (abs(xdiff) > ydiff) {
-                
+            if (abs(xdiff) < ydiff) {
+                is_distinct = false;
+                break;
             }
         }
+
+        if (is_distinct) {
+            distinct.push_back(peaks[i]);
+        }
     }
+
+    fout << distinct.size();
 
     // sort by y values
     // iterate through, and for each coordinate you can calculate if it exists in another by comparing y values, taking the difference and applying to x vals
