@@ -35,6 +35,23 @@ int main() {
 
     int left_l = cows[0].first, left_r, right_l, right_r = cows[N - 1].first;
 
+
+    //create list of min and max y at each x-coordinate
+
+    vector<pair<int, int>> limit_list_left;
+    ymax = 0, ymin = 1000000000;
+    for (int i = 0; i < N; i++) {
+        ymax = max(cows[i].second, ymax); ymin = min(cows[i].second, ymin);
+        limit_list_left.push_back({ymin, ymax});
+    }
+
+    vector<pair<int, int>> limit_list_right;
+    ymax = 0, ymin = 1000000000;
+    for (int i = N - 1; i >= 0; i--) {
+        ymax = max(cows[i].second, ymax); ymin = min(cows[i].second, ymin);
+        limit_list_right.push_back({ymin, ymax});
+    }
+
     for (int i = 0; i < N - 1; i++) {
         if (i != N - 2) {
             if (cows[i].first == cows[i + 1].first) {
