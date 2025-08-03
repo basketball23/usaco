@@ -24,14 +24,31 @@ int main() {
     int single_enc = (xmax - xmin) * (ymax - ymin);
     int double_enc;
 
-    //main logic calculating double enclosure goes here
+    // ALGORITHM:
+    /*
+    Sort points by x coordinate, and check bounding boxes by partitioning at each x-coordinate
+    */
 
-    // find bounding coordinates for the two separate enclosures, then calculate area and sum.
-    
-    // find bounding coordinates by using the already used min and max of x and y???
 
-    // TODO: need algorithm to find smallest bounding box of two boxes.
+    // keep a running pair of minimum y
+    sort(cows.begin(), cows.end());
 
+    int left_l = cows[0].first, left_r, right_l, right_r = cows[N - 1].first;
+
+    for (int i = 0; i < N - 1; i++) {
+        if (i != N - 2) {
+            if (cows[i].first == cows[i + 1].first) {
+                // skip processing x val if duplicates
+                continue;
+            }
+        }
+
+        left_r = cows[i].first;
+        right_l = cows[i + 1].first;
+
+
+
+    }
 
     fout << (single_enc - double_enc) << "/n";
 
