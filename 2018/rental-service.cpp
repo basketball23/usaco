@@ -46,13 +46,13 @@ int main() {
     vector<long long> rental_prefix(N);
     rental_prefix[0] = rentals[0];
     for (int i = 1; i < N; i++) {
-        rental_prefix[i] = rentals[i] + rental_prefix[i - 1];
+        rental_prefix[i] = rental_prefix[i - 1] + rentals[i];
     }
 
     vector<long long> milk_prefix(N);
     milk_prefix[0] = milk[0];
     for (int i = 1; i < N; i++) {
-        milk_prefix[i] = milk[i] + milk_prefix[i - 1];
+        milk_prefix[i] = milk_prefix[i - 1] + milk[i];
     }
 
     vector<long long> store_prefix(N);
@@ -75,7 +75,7 @@ int main() {
 
                 price += stores[store_idx].first * stores[store_idx].second;
             } else {
-                price += milk_avaliable * stores[store_idx].second;
+                price += stores[store_idx].first * milk_avaliable;
                 milk_avaliable = 0;
                 break;
             }
