@@ -24,7 +24,14 @@ int main() {
     int single_enc = (xmax - xmin) * (ymax - ymin);
     int double_enc;
 
-    //main logic goes here
+    //main logic calculating double enclosure goes here
+
+    // find bounding coordinates for the two separate enclosures, then calculate area and sum.
+    
+    // find bounding coordinates by using the already used min and max of x and y???
+
+    // TODO: need algorithm to find smallest bounding box of two boxes.
+
 
     fout << (single_enc - double_enc) << "/n";
 
