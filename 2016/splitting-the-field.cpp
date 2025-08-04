@@ -7,18 +7,18 @@
 using namespace std;
 
 int main() {
-    /*
-    ifstream cin("split.in");
-    ofstream cout("split.out");
-    */
+    
+    ifstream fin("split.in");
+    ofstream fout("split.out");
+    
 
-    int N; cin >> N;
+    int N; fin >> N;
     int xmax = 0, xmin = 1000000000, ymax = 0, ymin = 1000000000;
     
     vector<pair<int, int>> cows;
 
     for (int i = 0; i < N; i++) {
-        int x, y; cin >> x >> y;
+        int x, y; fin >> x >> y;
         xmax = max(x, xmax); xmin = min(x, xmin); ymax = max(y, ymax); ymin = min(y, ymin);
         cows.push_back({x, y});
     }
@@ -35,18 +35,18 @@ int main() {
 
     //create list of min and max y at each x-coordinate
 
-    vector<pair<int, int>> limit_list_left;
+    vector<int> limit_list_left;
     ymax = 0, ymin = 1000000000;
     for (int i = 0; i < N; i++) {
         ymax = max(cows[i].second, ymax); ymin = min(cows[i].second, ymin);
-        limit_list_left.push_back({ymin, ymax});
+        limit_list_left.push_back(ymax - ymin);
     }
 
-    vector<pair<int, int>> limit_list_right;
+    vector<int> limit_list_right;
     ymax = 0, ymin = 1000000000;
     for (int i = N - 1; i >= 0; i--) {
         ymax = max(cows[i].second, ymax); ymin = min(cows[i].second, ymin);
-        limit_list_right.push_back({ymin, ymax});
+        limit_list_right.push_back(ymax - ymin);
     }
 
     reverse(limit_list_right.begin(), limit_list_right.end());
@@ -63,25 +63,14 @@ int main() {
         left_r = cows[i].first;
         right_l = cows[i + 1].first;
 
-        int left_area = (left_r - left_l) * (limit_list_left[i].second - limit_list_left[i].first);
-        int right_area = (right_r - right_l) * (limit_list_right[i + 1].second - limit_list_right[i + 1].first);
+        int left_area = (left_r - left_l) * (limit_list_left[i]);
+        int right_area = (right_r - right_l) * (limit_list_right[i + 1]);
 
         int current_area = left_area + right_area;
 
         double_enc_area = min(double_enc_area, current_area);
     }
 
-    //DEBUG
-    for (int i = 0; i < N; i++) {
-        cout << cows[i].first << " ";
-    }
-    cout << endl;
-    for (int i = 0; i < N; i++) {
-        cout << cows[i].second << " ";
-    }
-    cout << endl;
-    //DEBUG
-
-    cout << (single_enc_area - double_enc_area) << "\n";
+    fout << (single_enc_area - double_enc_area) << "\n";
 
 }
