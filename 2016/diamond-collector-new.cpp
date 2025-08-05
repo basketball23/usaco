@@ -36,9 +36,11 @@ int main() {
         while (diamonds[right] - diamonds[left] > K) {
             left++;
         }
+        
+        int elements = right - left + 1;
 
-        if (right - left + 1 > first) {
-            first = right - left + 1;
+        if (elements > first) {
+            first = elements;
             l = left;
             r = right;
         }
@@ -49,6 +51,7 @@ int main() {
     // second pass to find second largest subarray, accounting for already used diamonds
     
     for (int right = 0; right < N; right++) {
+
         while (diamonds[right] - diamonds[left] > K) {
             left++;
         }
@@ -61,12 +64,10 @@ int main() {
             left++;
         }
         
-        if (right - left + 1 > second) {
-            if (right - left + 1 == first) {
-                continue;
-            } else {
-                second = right - left + 1;
-            }
+        int elements = right - left + 1;
+
+        if (elements > second) {
+            second = elements;
         }
     }
 
