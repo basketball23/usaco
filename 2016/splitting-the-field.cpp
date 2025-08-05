@@ -22,8 +22,8 @@ int main() {
         cows.push_back({x, y});
     }
 
-    int single_enc_area = (xmax - xmin) * (ymax - ymin);
-    int double_enc_area = 2147483647;
+    long long single_enc_area = (xmax - xmin) * (ymax - ymin);
+    long long double_enc_area = 2147483647;
 
     // ALGORITHM:
     /*
@@ -63,10 +63,10 @@ int main() {
         left_r = cows[i].first;
         right_l = cows[i + 1].first;
 
-        int left_area = (left_r - left_l) * (limit_list_left[i]);
-        int right_area = (right_r - right_l) * (limit_list_right[i + 1]);
+        long long left_area = (left_r - left_l) * (limit_list_left[i]);
+        long long right_area = (right_r - right_l) * (limit_list_right[i + 1]);
 
-        int current_area = left_area + right_area;
+        long long current_area = left_area + right_area;
 
         double_enc_area = min(double_enc_area, current_area);
     }
@@ -106,10 +106,10 @@ int main() {
         bottom_t = cows[i].second;
         top_b = cows[i + 1].second;
 
-        int bottom_area = (bottom_t - bottom_b) * (limit_list_bottom[i]);
-        int top_area = (top_t - top_b) * (limit_list_top[i + 1]);
+        long long bottom_area = (bottom_t - bottom_b) * (limit_list_bottom[i]);
+        long long top_area = (top_t - top_b) * (limit_list_top[i + 1]);
 
-        int current_area = bottom_area + top_area;
+        long long current_area = bottom_area + top_area;
 
         double_enc_area = min(double_enc_area, current_area);
 
