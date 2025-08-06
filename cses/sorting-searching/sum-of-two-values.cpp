@@ -1,28 +1,33 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
 int main() {
-    int n, x; cin >> n >> x;
+    int n, x;
+    cin >> n >> x;
 
-    vector<int> values;
+    vector<pair<int, int>> values(n);
     for (int i = 0; i < n; i++) {
-        int a; cin >> a;
-        values.push_back(a);
+        cin >> values[i].first;
+        values[i].second = i + 1;
     }
 
-    unordered_map<int, int> complements;
+    sort(values.begin(), values.end());
 
-    for (int i = 0; i < n; i++) {
-        if (complements.find(x - values[i]) == complements.end()) {
-            complements[values[i]] = i;
-        } else {
-            cout << i + 1 << " " << complements[x - values[i]] + 1 << endl;
+    int l = 0, r = n - 1;
+    while (l < r) {
+        int sum = values[l].first + values[r].first;
+        if (sum == x) {
+            cout << values[l].second << " " << values[r].second << "\n";
             return 0;
+        } else if (sum < x) {
+            l++;
+        } else {
+            r--;
         }
     }
 
-    cout << "IMPOSSIBLE" << "\n";
+    cout << "IMPOSSIBLE\n";
 }
