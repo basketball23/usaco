@@ -24,8 +24,7 @@ int main() {
 
     // two pointers, keep track of how many elements in largest and second largest possible subarrays. Sum, and get answer
 
-    int first = 0, second = 0;
-
+    int first = 0;
     int left = 0;
 
     int l, r;
@@ -46,6 +45,7 @@ int main() {
         }
     }
 
+    int second = 0;
     left = 0;
 
     // second pass to find second largest subarray, accounting for already used diamonds
@@ -57,11 +57,8 @@ int main() {
         }
         
         if (right >= l && right <= r) {
+            left = r + 1;
             continue;
-        }
-
-        while (left >= l && left <= r) {
-            left++;
         }
         
         int elements = right - left + 1;
