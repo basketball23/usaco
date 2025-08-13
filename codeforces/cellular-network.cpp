@@ -23,7 +23,7 @@ int main() {
         towers[i] = b;
     }
 
-    // iterate through cell tower positions, and binary search the value on the city array
-    // find smallest value that it will cover the first city
-    // then, find smallest value for the next tower that will cover the leftmost city that hasn't been covered already
+    // Iterate through each of the cities
+    // Perform binary search on the list of cell towers, find smallest possible distance
+    // Keep a max() of distances
 }
