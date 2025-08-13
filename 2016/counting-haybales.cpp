@@ -31,18 +31,17 @@ int main() {
         while (low < high) {
             mid = (high + low)/2;
 
-            if (haybales[mid] <= A) {
+            if (haybales[mid] <= A - 1) {
                 low = mid + 1;
             } else {
                 high = mid;
             }
         }
 
-        int low_idx = low - 1;
+        int low_idx = low;
 
         low = 0;
         high = haybales.size();
-        mid;
 
         while (low < high) {
             mid = (high + low)/2;
