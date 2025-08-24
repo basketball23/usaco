@@ -1,11 +1,49 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-bool willFinish(int K, const vector<int>& cows) {
+bool willFinish(int K, const vector<int>& cows, int max_time) {
+    vector<int> stage(K);
+    int current_time = 0;
 
+
+    for (int i = 0; i < K; i++) {
+        stage[i] = cows[i];
+    }
+
+    
+    int cow_idx = K;
+    while (cow_idx < cows.size()) {
+        for (int i = 0; i < K; i++) {
+            if (stage[i] == 0) {
+                stage[i] = cows[cow_idx];
+                cow_idx++;
+            }
+        }
+
+        for (int i = 0; i < K; i++) {
+            stage[i]--;
+        }
+        current_time++;
+    }
+
+    
+    int time_remainder = 0;
+    for (int i = 0; i < K; i++) {
+        time_remainder = max(time_remainder, stage[i]);
+    }
+
+    current_time += time_remainder;
+
+
+    if (current_time > max_time) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 int main() {
@@ -42,7 +80,7 @@ int main() {
     while (low < high) {
         int mid = low + (high - low)/2;
 
-        if (willFinish(mid, cows)) {
+        if (willFinish(mid, cows, Tmax)) {
             high = mid;
         } else {
             low = mid + 1;
