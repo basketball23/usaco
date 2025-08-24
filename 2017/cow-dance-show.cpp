@@ -4,6 +4,10 @@
 
 using namespace std;
 
+bool willFinish(int K, const vector<int>& cows) {
+
+}
+
 int main() {
     ifstream fin("cowdance.in");
     ofstream fout("cowdance.out");
@@ -28,4 +32,23 @@ int main() {
 
     // Our job is to find the minimum true
     // Checking if K works can be represented as a function, looping through the cows (O[n])
+
+
+    int K;
+
+    int low = 0;
+    int high = cows.size();
+
+    while (low < high) {
+        int mid = low + (high - low)/2;
+
+        if (willFinish(mid, cows)) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    K = low;
+    fout << K << "\n";
 }
