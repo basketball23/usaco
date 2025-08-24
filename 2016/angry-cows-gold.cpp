@@ -33,7 +33,7 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
             }
         }
 
-        curr_detonation -= curr_R;
+        curr_detonation = hay_bales[curr_idx + 1];
         curr_R--;
     }
 
@@ -42,6 +42,34 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
     }
     
     // Iterate right
+    curr_R = R;
+    curr_idx = drop_idx + 1;
+    curr_detonation = drop_middle;
+
+    while (still_detonating) {
+
+        if (hay_bales[curr_idx] > curr_detonation + curr_R) {
+            still_detonating = false;
+            continue;
+        }
+
+        while (hay_bales[curr_idx] < curr_detonation + curr_R) {
+            curr_idx++;
+            if (curr_idx == hay_bales.size()) {
+                break;
+            }
+        }
+
+
+        curr_detonation = hay_bales[curr_idx - 1];
+        curr_R--;
+    }
+
+    if (!still_detonating) {
+        return false;
+    }
+
+    return true;
 }
 
 // Function returns the indicies of largest gap in hay bales
