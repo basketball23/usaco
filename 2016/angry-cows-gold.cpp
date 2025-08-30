@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <cmath>
 
 using namespace std;
 
@@ -17,23 +18,23 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
     // Iterate left
     int curr_R = R;
     int curr_idx = drop_idx;
-    int curr_detonation = drop_middle;
+    int detonation_center = drop_middle;
 
     while (still_detonating) {
 
-        if (hay_bales[curr_idx] < curr_detonation - curr_R) {
+        if (hay_bales[curr_idx] < detonation_center - curr_R) {
             still_detonating = false;
-            continue;
+            break;
         }
 
-        while (hay_bales[curr_idx] > curr_detonation - curr_R) {
+        while (hay_bales[curr_idx] >= detonation_center - curr_R) {
             curr_idx--;
             if (curr_idx == -1) {
                 break;
             }
         }
 
-        curr_detonation = hay_bales[curr_idx + 1];
+        detonation_center = hay_bales[curr_idx + 1];
         curr_R--;
     }
 
@@ -44,24 +45,23 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
     // Iterate right
     curr_R = R;
     curr_idx = drop_idx + 1;
-    curr_detonation = drop_middle;
+    detonation_center = drop_middle;
 
     while (still_detonating) {
 
-        if (hay_bales[curr_idx] > curr_detonation + curr_R) {
+        if (hay_bales[curr_idx] > detonation_center + curr_R) {
             still_detonating = false;
-            continue;
+            break;
         }
 
-        while (hay_bales[curr_idx] < curr_detonation + curr_R) {
+        while (hay_bales[curr_idx] <= detonation_center + curr_R) {
             curr_idx++;
             if (curr_idx == hay_bales.size()) {
                 break;
             }
         }
 
-
-        curr_detonation = hay_bales[curr_idx - 1];
+        detonation_center = hay_bales[curr_idx - 1];
         curr_R--;
     }
 
@@ -72,19 +72,19 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
     return true;
 }
 
-// Function returns the indicies of largest gap in hay bales
+// Function returns the index of largest gap in hay bales (lower bound)
 int largest_diff(const vector<int>& hay_bales) {
-    int largest_gap;
+    int largest_gap_idx;
     int difference = 0;
 
     for (int j = 0; j < hay_bales.size() - 1; j++) {
         if (hay_bales[j + 1] - hay_bales[j] > difference) {
             difference = hay_bales[j + 1] - hay_bales[j];
-            largest_gap = j;
+            largest_gap_idx = j;
         }
     }
 
-    return largest_gap;
+    return largest_gap_idx;
 }
 
 
@@ -117,26 +117,21 @@ int main() {
 
     // Finding largest gap in bales to drop cow
 
-    int largest_gap = largest_diff(hay_bales);
-    int drop_idx = largest_gap;
+    int drop_idx = largest_diff(hay_bales);
 
     // Binary search for lowest R value
     int low = 0;
     int high = hay_bales[hay_bales.size() - 1] - hay_bales[0];
 
-    int R, r;
-
     while (low < high) {
         int mid = low + (high - low)/2;
-
-        r = mid;
-        if (detonationPossible(r, hay_bales, drop_idx)) {
+        if (detonationPossible(mid, hay_bales, drop_idx)) {
             high = mid;
         } else {
             low = mid + 1;
         }
     }
-    
-    R = low;
+
+    double R = round(low * 10) / 10;
     fout << R << "\n";
 }
