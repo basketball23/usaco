@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <iomanip>
 #include <cmath>
 
 using namespace std;
@@ -142,5 +143,5 @@ int main() {
     }
 
     double R = round(low * 10) / 10;
-    fout << R << "\n";
+    fout << fixed << setprecision(1) << R << "\n";
 }
