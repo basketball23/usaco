@@ -11,6 +11,10 @@ using namespace std;
 // Check if detonating with a R value works or not
 
 // Drop the cow at the largest difference between locations in hay bales
+
+// TODO:
+// Dropping at largest gap is NOT guaranteed to be optimal
+// Need to account for EVERY position
 bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
 
     int drop_middle = (hay_bales[drop_idx] + hay_bales[drop_idx + 1])/2;
