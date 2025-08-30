@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -8,12 +9,12 @@ int main() {
     int n, x;
     cin >> n >> x;
 
-    vector<int> nums;
+    vector<pair<int, int>> nums;
 
     for (int i = 0; i < n; i++) {
         int a;
         cin >> a;
-        nums.push_back(a);
+        nums.push_back({a, i + 1});
     }
 
     sort(nums.begin(), nums.end());
@@ -34,14 +35,14 @@ int main() {
                 continue;
             }
 
-            if (nums[left] + nums[right] + nums[i] == x) {
-                cout << left << " " << right << " " << i << "\n";
+            if (nums[left].first + nums[right].first + nums[i].first == x) {
+                cout << nums[left].second << " " << nums[right].second << " " << nums[i].second << "\n";
                 possible = true;
                 break;
 
-            } else if (nums[left] + nums[right] + nums[i] > x) {
+            } else if (nums[left].first + nums[right].first + nums[i].first > x) {
                 right--;
-            } else if (nums[left] + nums[right] + nums[i] < x) {
+            } else if (nums[left].first + nums[right].first + nums[i].first < x) {
                 left++;
             }
         }
