@@ -34,14 +34,17 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
             }
         }
 
-        detonation_center = hay_bales[curr_idx + 1];
+        if (curr_idx == -1) {
+                break;
+        }
+
+        // set index back to last value that worked
+        curr_idx++;
+        detonation_center = hay_bales[curr_idx];
         curr_R--;
     }
 
-    if (!still_detonating) {
-        return false;
-    }
-    
+
     // Iterate right
     curr_R = R;
     curr_idx = drop_idx + 1;
@@ -61,7 +64,13 @@ bool detonationPossible(int R, const vector<int>& hay_bales, int drop_idx) {
             }
         }
 
-        detonation_center = hay_bales[curr_idx - 1];
+        if (curr_idx == hay_bales.size()) {
+            break;
+        }
+
+        // set index back to last value that worked
+        curr_idx--;
+        detonation_center = hay_bales[curr_idx];
         curr_R--;
     }
 
