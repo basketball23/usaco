@@ -10,8 +10,8 @@ int main() {
     int n;
     cin >> n;
 
-    int current_time = 0;
-    int max_reward = 0;
+    long long current_time = 0;
+    long long max_reward = 0;
 
     vector<pair<int, int>> tasks;
 
@@ -25,9 +25,7 @@ int main() {
 
     for (int i = 0; i < n; i++) {
         current_time += tasks[i].first;
-
-        int reward = tasks[i].second - current_time;
-        max_reward += reward;
+        max_reward += tasks[i].second - current_time;
     }
 
     cout << max_reward << "\n";
