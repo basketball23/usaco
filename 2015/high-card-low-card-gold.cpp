@@ -6,17 +6,17 @@
 using namespace std;
 
 int main() {
-    //ifstream cin("cardgame.in");
-    //ofstream cout("cardgame.out");
+    ifstream fin("cardgame.in");
+    ofstream fout("cardgame.out");
 
     int N;
-    cin >> N;
+    fin >> N;
 
     vector<int> elsie;
 
     for (int i = 0; i < N; i++) {
         int card;
-        cin >> card;
+        fin >> card;
 
         elsie.push_back(card);
     }
@@ -31,9 +31,9 @@ int main() {
     for (int i = 1; i <= 2 * N; i++) {
         if (idx == N || i != elsie_sorted[idx]) {
             bessie.push_back(i);
-            cout << i << " ";
+            fout << i << " ";
         } else {
-            cout << "increment" << " ";
+            fout << "increment" << " ";
             idx++;
         }
     }
@@ -58,7 +58,37 @@ int main() {
     for (int i = N/2; i < N; i++) {
         bessie_round2.push_back(bessie[i]);
     }
+    reverse(bessie_round2.begin(), bessie_round2.end());
+
+    vector<int> elsie_round1;
+    for (int i = 0; i < N/2; i++) {
+        elsie_round1.push_back(elsie[i]);
+    }
+
+    vector<int> elsie_round2;
+    for (int i = N/2; i < N; i++) {
+        elsie_round2.push_back(elsie[i]);
+    }
 
 
-    
+    // Main game logic loop
+    int num_wins = 0;
+    for (int i = 0; i < N/2; i++) {
+
+        // TODO: use binary search to find lowest value that wins instead of iteration
+        for (int j = 0; j < bessie_round1.size(); j++) {
+            if (bessie_round1[j] > elsie[i]) {
+                num_wins++;
+                bessie_round1.erase(bessie_round1.begin() + j);
+                break;
+            }
+        }
+    }
+
+    for (int i = 0; i < N/2; i++) {
+        
+    }
+
+
+
 }
