@@ -31,9 +31,7 @@ int main() {
     for (int i = 1; i <= 2 * N; i++) {
         if (idx == N || i != elsie_sorted[idx]) {
             bessie.push_back(i);
-            fout << i << " ";
         } else {
-            fout << "increment" << " ";
             idx++;
         }
     }
@@ -76,19 +74,40 @@ int main() {
     for (int i = 0; i < N/2; i++) {
 
         // TODO: use binary search to find lowest value that wins instead of iteration
+        bool won = false;
+
         for (int j = 0; j < bessie_round1.size(); j++) {
-            if (bessie_round1[j] > elsie[i]) {
+            if (bessie_round1[j] > elsie_round1[i]) {
                 num_wins++;
+                won = true;
                 bessie_round1.erase(bessie_round1.begin() + j);
                 break;
             }
         }
+
+        if (!won) {
+            bessie_round1.erase(bessie_round1.begin());
+        }
     }
 
     for (int i = 0; i < N/2; i++) {
-        
+
+        // TODO: use binary search to find lowest value that wins instead of iteration
+        bool won = false;
+
+        for (int j = 0; j < bessie_round2.size(); j++) {
+            if (bessie_round2[j] < elsie_round2[i]) {
+                num_wins++;
+                won = true;
+                bessie_round2.erase(bessie_round2.begin() + j);
+                break;
+            }
+        }
+
+        if (!won) {
+            bessie_round2.erase(bessie_round2.begin());
+        }
     }
 
-
-
+    fout << num_wins << "\n";
 }
