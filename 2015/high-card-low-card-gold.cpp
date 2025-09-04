@@ -76,8 +76,27 @@ int main() {
     for (int i = 0; i < elsie_round1.size(); i++) {
 
         // TODO: use binary search to find lowest value that wins instead of iteration
-        bool won = false;
+        // bool won = false;
 
+        int low = 0;
+        int high = bessie_round1.size() - 1;
+
+        while (low < high) {
+            int mid = low + (high - low)/2;
+            if (bessie_round1[mid] >= elsie_round1[i]) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        if (bessie_round1[low] < elsie_round1[i]) {
+            bessie_round1.erase(bessie_round1.begin());
+        } else {
+            num_wins++;
+            bessie_round1.erase(bessie_round1.begin() + low);
+        }
+        /*
         for (int j = 0; j < bessie_round1.size(); j++) {
             if (bessie_round1[j] > elsie_round1[i]) {
                 num_wins++;
@@ -86,17 +105,38 @@ int main() {
                 break;
             }
         }
+        
 
         if (!won) {
             bessie_round1.erase(bessie_round1.begin());
         }
+        */
     }
 
     for (int i = 0; i < elsie_round2.size(); i++) {
 
         // TODO: use binary search to find lowest value that wins instead of iteration
-        bool won = false;
+        // bool won = false;
 
+        int low = 0;
+        int high = bessie_round2.size() - 1;
+
+        while (low < high) {
+            int mid = low + (high - low)/2;
+            if (bessie_round2[mid] <= elsie_round2[i]) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        if (bessie_round2[low] > elsie_round2[i]) {
+            bessie_round2.erase(bessie_round2.begin());
+        } else {
+            num_wins++;
+            bessie_round2.erase(bessie_round2.begin() + low);
+        }
+        /*
         for (int j = 0; j < bessie_round2.size(); j++) {
             if (bessie_round2[j] < elsie_round2[i]) {
                 num_wins++;
@@ -109,6 +149,7 @@ int main() {
         if (!won) {
             bessie_round2.erase(bessie_round2.begin());
         }
+        */
     }
 
     fout << num_wins << "\n";
