@@ -47,16 +47,18 @@ int main() {
     */
     
     // Build first round and second round options
-    vector<int> bessie_round1;
-    for (int i = 0; i < N/2; i++) {
-        bessie_round1.push_back(bessie[i]);
-    }
-
     vector<int> bessie_round2;
-    for (int i = N/2; i < N; i++) {
+    for (int i = 0; i < N/2; i++) {
         bessie_round2.push_back(bessie[i]);
     }
+
     reverse(bessie_round2.begin(), bessie_round2.end());
+
+    // Bessie round 1 and 2 are flipped because largest goes first, and smallest second
+    vector<int> bessie_round1;
+    for (int i = N/2; i < N; i++) {
+        bessie_round1.push_back(bessie[i]);
+    }
 
     vector<int> elsie_round1;
     for (int i = 0; i < N/2; i++) {
@@ -71,7 +73,7 @@ int main() {
 
     // Main game logic loop
     int num_wins = 0;
-    for (int i = 0; i < N/2; i++) {
+    for (int i = 0; i < elsie_round1.size(); i++) {
 
         // TODO: use binary search to find lowest value that wins instead of iteration
         bool won = false;
@@ -90,7 +92,7 @@ int main() {
         }
     }
 
-    for (int i = 0; i < N/2; i++) {
+    for (int i = 0; i < elsie_round2.size(); i++) {
 
         // TODO: use binary search to find lowest value that wins instead of iteration
         bool won = false;
