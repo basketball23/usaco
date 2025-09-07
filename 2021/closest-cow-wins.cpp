@@ -6,6 +6,7 @@
 using namespace std;
 
 int main() {
+    cin.tie(nullptr)->sync_with_stdio(false);
     int K, M, N;
     cin >> K >> M >> N;
 
@@ -21,17 +22,20 @@ int main() {
     Add total 
     */
 
+    vector<vector<int>> patches_bysize;
     vector<pair<int, int>> grassy_patches;
+    vector<bool> patches_won(K, false);
 
     for (int i = 0; i < K; i++) {
         int p, t;
         cin >> p >> t;
 
+        patches_bysize.push_back({p, t, i});
         grassy_patches.push_back({p, t});
     }
 
-    sort(grassy_patches.begin(), grassy_patches.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
-        return a.second > b.second;
+    sort(patches_bysize.begin(), patches_bysize.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[1] > b[1];
     });
 
 
@@ -43,5 +47,24 @@ int main() {
         nhoj_cows.push_back(f);
     }
 
-    
+    sort(nhoj_cows.begin(), nhoj_cows.end());
+    // Main logic
+
+    for (int i = 0; i < K; i++) {
+        if (!patches_won[i]) {
+
+        }
+    }
+
+    // Counting ouput
+
+    long long total = 0;
+
+    for (int i = 0; i < K; i++) {
+        if (patches_won[i] == true) {
+            total += grassy_patches[i].second;
+        }
+    }
+
+    cout << total << "\n";
 }
