@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <queue>
 #include <utility>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,6 +15,10 @@ vector<int> cows;
 bool wormholeWorks(int size) {
 
     for (int i = 0; i < cows.size(); i++) {
+        
+        bool found = false;
+        int target = cows[i]--;
+
         if (!visited[i]) {
             queue<int> q;
             q.push(i);
@@ -22,28 +28,42 @@ bool wormholeWorks(int size) {
                 int curr_node = q.front();
                 q.pop();
 
+                if (curr_node == target) {
+                    found = true;
+                    break;
+                }
+
                 for (pair<int, int> neighbor : adj[curr_node]) {
-                    if (!visited[neighbor.first]) {
+                    if (!visited[neighbor.first] && neighbor.second >= size) {
                         visited[neighbor.first] = true;
                         q.push(neighbor.first);
                     }
                 }
             }
         }
+
+        if (!found) {
+            return false;
+        }
+        fill(visited.begin(), visited.end(), false);
     }
+
+    return true;
 }
 
 int main() {
-    cin.tie(nullptr)->sync_with_stdio(false);
+    ifstream fin("wormsort.in");
+    ofstream fout("wormsort.out");
+    
     int N, M;
-    cin >> N >> M;
+    fin >> N >> M;
 
     adj.resize(N);
     visited.resize(N, false);
     cows.resize(N);
 
     for (int i = 0; i < N; i++) {
-        cin >> cows[i];
+        fin >> cows[i];
     }
     /*
     IMPORTANT: vector is zero indexed, but the problem is 1-indexed. Make sure to convert
@@ -52,7 +72,7 @@ int main() {
     vector<int> weights;
     for (int i = 0; i < M; i++) {
         int a, b, w;
-        cin >> a >> b >> w;
+        fin >> a >> b >> w;
 
         a--; b--;
 
@@ -79,8 +99,7 @@ int main() {
         } else {
             lo = mid + 1;
         }
-        fill(visited.begin(), visited.end(), false);
     }
     
-    cout << weights[lo] << "\n";
+    fout << weights[lo] << "\n";
 }
