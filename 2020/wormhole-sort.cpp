@@ -11,36 +11,37 @@ using namespace std;
 vector<vector<pair<int, int>>> adj;
 vector<bool> visited;
 vector<int> cows;
+vector<int> weights;
 
-bool wormholeWorks(int size) {
+bool wormholeWorks(int wormhole_size) {
 
     for (int i = 0; i < cows.size(); i++) {
         
         bool found = false;
-        int target = cows[i]--;
+        int target = --cows[i];
 
-        if (!visited[i]) {
-            queue<int> q;
-            q.push(i);
-            visited[i] = true;
+        
+        queue<int> q;
+        q.push(i);
+        visited[i] = true;
 
-            while (!q.empty()) {
-                int curr_node = q.front();
-                q.pop();
+        while (!q.empty()) {
+            int curr_node = q.front();
+            q.pop();
 
-                if (curr_node == target) {
-                    found = true;
-                    break;
-                }
+            if (curr_node == target) {
+                found = true;
+                break;
+            }
 
-                for (pair<int, int> neighbor : adj[curr_node]) {
-                    if (!visited[neighbor.first] && neighbor.second >= size) {
-                        visited[neighbor.first] = true;
-                        q.push(neighbor.first);
-                    }
+            for (pair<int, int> neighbor : adj[curr_node]) {
+                if (!visited[neighbor.first] && neighbor.second >= wormhole_size) {
+                    visited[neighbor.first] = true;
+                    q.push(neighbor.first);
                 }
             }
         }
+        
 
         if (!found) {
             return false;
@@ -61,6 +62,7 @@ int main() {
     adj.resize(N);
     visited.resize(N, false);
     cows.resize(N);
+    weights.resize(M);
 
     for (int i = 0; i < N; i++) {
         fin >> cows[i];
@@ -69,7 +71,6 @@ int main() {
     IMPORTANT: vector is zero indexed, but the problem is 1-indexed. Make sure to convert
     */
 
-    vector<int> weights;
     for (int i = 0; i < M; i++) {
         int a, b, w;
         fin >> a >> b >> w;
@@ -79,25 +80,23 @@ int main() {
         adj[a].push_back({b, w});
         adj[b].push_back({a, w});
 
-        weights.push_back(w);
+        weights[i] = w;
     }
     sort(weights.begin(), weights.end());
 
-    int max_min = -1;
-
-    // Use binary search to determine the wormhole width: find the maximum value that works (function looks like: false, false, false, true true)
-    // run bfs over EVERY node, to find its path to the target with the maximum min width
+    // Use binary search to determine the wormhole width: find the maximum value that works (function looks like: true, true, true, false, false)
+    // this is too slow: run bfs over EVERY node, to find its path to the target with the maximum min width
 
     int lo = 0;
     int hi = weights.size() - 1;
 
     while (lo < hi) {
-        int mid = lo + (hi - lo)/2;
+        int mid = lo + (hi - lo)/2 + 1;
 
         if (wormholeWorks(weights[mid])) {
-            hi = mid;
+            lo = mid;
         } else {
-            lo = mid + 1;
+            hi = mid - 1;
         }
     }
     
