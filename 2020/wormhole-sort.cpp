@@ -53,11 +53,11 @@ bool wormholeWorks(int wormhole_size) {
 }
 
 int main() {
-    ifstream fin("wormsort.in");
-    ofstream fout("wormsort.out");
+    //ifstream cin("wormsort.in");
+    //ofstream cout("wormsort.out");
     
     int N, M;
-    fin >> N >> M;
+    cin >> N >> M;
 
     adj.resize(N);
     visited.resize(N, false);
@@ -65,7 +65,7 @@ int main() {
     weights.resize(M);
 
     for (int i = 0; i < N; i++) {
-        fin >> cows[i];
+        cin >> cows[i];
     }
     /*
     IMPORTANT: vector is zero indexed, but the problem is 1-indexed. Make sure to convert
@@ -73,7 +73,7 @@ int main() {
 
     for (int i = 0; i < M; i++) {
         int a, b, w;
-        fin >> a >> b >> w;
+        cin >> a >> b >> w;
 
         a--; b--;
 
@@ -99,6 +99,18 @@ int main() {
             hi = mid - 1;
         }
     }
+
+    bool sorted = true;
+    for (int i = 0; i < N; i++) {
+        if (cows[i] != i + 1) {
+            sorted = false;
+            break;
+        }
+    }
     
-    fout << weights[lo] << "\n";
+    if (sorted) {
+        cout << -1 << "\n";
+    } else {
+        cout << weights[lo] << "\n";
+    }
 }
