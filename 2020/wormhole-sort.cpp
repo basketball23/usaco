@@ -13,42 +13,33 @@ vector<bool> visited;
 vector<int> cows;
 vector<int> weights;
 
+bool found;
+
+void dfs(int node, const int& wormhole_size, const int& target) {
+    if (node == target) {
+        found = true;
+    }
+    for (pair<int, int> n : adj[node]) {
+        if (!visited[n.first] && n.second >= wormhole_size) {
+            visited[n.first] = true;
+
+            dfs(n.first, wormhole_size, target);
+        }
+    }
+}
+
 bool wormholeWorks(int wormhole_size) {
 
     for (int i = 0; i < cows.size(); i++) {
-        
-        bool found = false;
+        found = false;
         int target = --cows[i];
 
-        
-        queue<int> q;
-        q.push(i);
-        visited[i] = true;
-
-        while (!q.empty()) {
-            int curr_node = q.front();
-            q.pop();
-
-            if (curr_node == target) {
-                found = true;
-                break;
-            }
-
-            for (pair<int, int> neighbor : adj[curr_node]) {
-                if (!visited[neighbor.first] && neighbor.second >= wormhole_size) {
-                    visited[neighbor.first] = true;
-                    q.push(neighbor.first);
-                }
-            }
-        }
-        
+        dfs(i, wormhole_size, target);
 
         if (!found) {
             return false;
         }
-        fill(visited.begin(), visited.end(), false);
     }
-
     return true;
 }
 
