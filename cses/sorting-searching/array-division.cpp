@@ -1,23 +1,27 @@
 #include <iostream>
 #include <vector>
-#include <climits>
+#include <numeric>
+#include <algorithm>
 
 using namespace std;
 
 vector<int> nums;
 
-bool canDivide(int max_sum, int k) {
-    int subarrays[k];
+bool canDivide(long long max_sum, int k) {
+    int num_arr = 1;
+    long long curr_sum = 0;
 
-    for (int i = 0; i < nums.size(); i++) {
-        int idx = i % k;
 
-        subarrays[idx] += nums[idx];
-    }
+    for (int idx = 0; idx < (int)nums.size(); idx++) {
+        if (curr_sum + nums[idx] > max_sum) {
+            num_arr++;
+            curr_sum = nums[idx];
 
-    for (int i = 0; i < k; i++) {
-        if (subarrays[i] > max_sum) {
-            return false;
+            if (num_arr > k) {
+                return false;
+            }
+        } else {
+            curr_sum += nums[idx];
         }
     }
     return true;
@@ -38,11 +42,11 @@ int main() {
     // find maximum minimum sum of array division
     // function looks like (false, false, false, true, true, true)
 
-    int lo = 0;
-    int hi = INT_MAX;
+    long long lo = *max_element(nums.begin(), nums.end());
+    long long hi = accumulate(nums.begin(), nums.end(), 0LL);
 
     while (lo < hi) {
-        int mid = lo + (hi - lo)/2;
+        long long mid = lo + (hi - lo)/2;
 
         if (canDivide(mid, k)) {
             hi = mid;
