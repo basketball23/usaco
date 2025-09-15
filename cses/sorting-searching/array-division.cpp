@@ -1,12 +1,26 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 
 using namespace std;
 
 vector<int> nums;
 
-bool canDivide(int max_sum) {
+bool canDivide(int max_sum, int k) {
+    int subarrays[k];
 
+    for (int i = 0; i < nums.size(); i++) {
+        int idx = i % k;
+
+        subarrays[idx] += nums[idx];
+    }
+
+    for (int i = 0; i < k; i++) {
+        if (subarrays[i] > max_sum) {
+            return false;
+        }
+    }
+    return true;
 }
 
 int main() {
@@ -25,12 +39,12 @@ int main() {
     // function looks like (false, false, false, true, true, true)
 
     int lo = 0;
-    int hi = nums.size() - 1;
+    int hi = INT_MAX;
 
     while (lo < hi) {
         int mid = lo + (hi - lo)/2;
 
-        if (canDivide(mid)) {
+        if (canDivide(mid, k)) {
             hi = mid;
         } else {
             lo = mid + 1;
