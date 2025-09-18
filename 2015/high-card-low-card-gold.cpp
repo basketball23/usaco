@@ -96,21 +96,6 @@ int main() {
             num_wins++;
             bessie_round1.erase(bessie_round1.begin() + low);
         }
-        /*
-        for (int j = 0; j < bessie_round1.size(); j++) {
-            if (bessie_round1[j] > elsie_round1[i]) {
-                num_wins++;
-                won = true;
-                bessie_round1.erase(bessie_round1.begin() + j);
-                break;
-            }
-        }
-        
-
-        if (!won) {
-            bessie_round1.erase(bessie_round1.begin());
-        }
-        */
     }
 
     for (int i = 0; i < elsie_round2.size(); i++) {
@@ -136,20 +121,6 @@ int main() {
             num_wins++;
             bessie_round2.erase(bessie_round2.begin() + low);
         }
-        /*
-        for (int j = 0; j < bessie_round2.size(); j++) {
-            if (bessie_round2[j] < elsie_round2[i]) {
-                num_wins++;
-                won = true;
-                bessie_round2.erase(bessie_round2.begin() + j);
-                break;
-            }
-        }
-
-        if (!won) {
-            bessie_round2.erase(bessie_round2.begin());
-        }
-        */
     }
 
     fout << num_wins << "\n";
