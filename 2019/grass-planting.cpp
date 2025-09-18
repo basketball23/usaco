@@ -18,8 +18,7 @@ void dfs(int node) {
     for (int child : adj[node]) {
         if (!visited[child]) {
             num_children[node].first++;
-
-            visited[child] = true;
+            
             num_children[child].second = num_children[node].second + 1;
             dfs(child);
         }
