@@ -8,14 +8,11 @@ using namespace std;
 
 vector<vector<int>> adj;
 vector<pair<int, int>> num_children;
-vector<int> depth;
 vector<bool> visited;
 
 int max_children = 0;
 
 void dfs(int node) {
-    // Todo: Remove depth vector, using only num_children.second in place of depth instead
-    num_children[node].second = depth[node];
     visited[node] = true;
 
     for (int child : adj[node]) {
@@ -23,7 +20,7 @@ void dfs(int node) {
             num_children[node].first++;
 
             visited[child] = true;
-            depth[child] = depth[node] + 1;
+            num_children[child].second = num_children[node].second + 1;
             dfs(child);
         }
     }
@@ -38,7 +35,6 @@ int main() {
 
     adj.resize(N);
     num_children.resize(N);
-    depth.resize(N);
     visited.resize(N, false);
 
     for (int i = 0; i < N - 1; i++) {
@@ -55,7 +51,7 @@ int main() {
 
     sort(num_children.rbegin(), num_children.rend());
 
-    if (num_children[0].second >= 2) {
+    if (num_children[0].second >= 1) {
         fout << num_children[0].first + 2 << "\n";
     } else {
         fout << num_children[0].first + 1;
