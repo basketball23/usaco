@@ -18,7 +18,8 @@ void dfs(int node) {
     for (int child : adj[node]) {
         if (!visited[child]) {
             num_children[node].first++;
-            
+
+            // this is depth instead of using a second vector
             num_children[child].second = num_children[node].second + 1;
             dfs(child);
         }
