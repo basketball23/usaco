@@ -4,6 +4,7 @@ using namespace std;
 
 vector<vector<int>> adj;
 vector<bool> visited;
+vector<pair<int, int>> edges;
 
 void dfs(int node) {
     visited[node] = true;
@@ -37,4 +38,10 @@ int main() {
     }
 
     // Algo: use a greedy approach - if odd, flip one edge to make it even
+
+    dfs(0);
+
+    for (int i = 0; i < m; i++) {
+        cout << edges[i].first << " " << edges[i].second << "\n";
+    }
 }
