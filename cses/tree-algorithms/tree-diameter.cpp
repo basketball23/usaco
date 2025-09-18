@@ -39,6 +39,7 @@ int main() {
         a--; b--;
 
         adj[a].push_back(b);
+        adj[b].push_back(a);
     }
 
     // Dfs on arbritrary node, obtain max depth
@@ -54,7 +55,7 @@ int main() {
     fill(visited.begin(), visited.end(), false);
     depth.assign(n, {0, 0});
 
-    
+
     dfs(max_node);
     sort(depth.rbegin(), depth.rend());
 
