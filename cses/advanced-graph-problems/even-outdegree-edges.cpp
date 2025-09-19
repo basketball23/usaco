@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <utility>
 
 using namespace std;
 
@@ -10,9 +12,16 @@ void dfs(int node) {
     visited[node] = true;
     // more logic here
 
+
     for (int child : adj[node]) {
         if (!visited[child]) {
-            // add logic here
+            int child_degree = adj[child].size();
+
+            if (child_degree % 2 != 0) {
+                edges.push_back({child, node});
+            } else {
+                edges.push_back({node, child});
+            }
 
             dfs(child);
         }
@@ -38,10 +47,14 @@ int main() {
     }
 
     // Algo: use a greedy approach - if odd, flip one edge to make it even
+    if (m % 2 != 0) {
+        cout << "IMPOSSIBLE" << "\n";
+    } else {
 
-    dfs(0);
+        dfs(0);
 
-    for (int i = 0; i < m; i++) {
-        cout << edges[i].first << " " << edges[i].second << "\n";
+        for (int i = 0; i < m; i++) {
+            cout << edges[i].first << " " << edges[i].second << "\n";
+        }
     }
 }
