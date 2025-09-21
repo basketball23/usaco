@@ -7,6 +7,12 @@
 
 using namespace std;
 
+struct Cow {
+    int a;
+    int t;
+    int idx;
+};
+
 int main() {
     ifstream fin("convention2.in");
     ofstream fout("convention2.out");
@@ -14,55 +20,42 @@ int main() {
     int N;
     fin >> N;
 
-    vector<pair<pair<int, int>, int>> cows(N);
+    vector<Cow> cows(N);
 
     for (int i = 0; i < N; i++) {
-        fin >> cows[i].first.first >> cows[i].second;
+        fin >> cows[i].a >> cows[i].t;
 
-        cows[i].first.second = i;
+        cows[i].idx = i;
     }
-    sort(cows.begin(), cows.end());
+    sort(cows.begin(), cows.end(), [](const Cow &a, const Cow &b) {
+        return a.a < b.a;
+    });
+
+    auto cmp = [](const Cow &a, const Cow &b) {
+        return a.idx > b.idx;
+    };
+    priority_queue<Cow, vector<Cow>, decltype(cmp)> pq(cmp);
 
     int max_waited = 0;
     int time = 0;
-    using info = pair<pair<int, int>, int>;
-    priority_queue<info> pq;
+    int i = 0;
 
-    for (int i = 0; i < N; i++) {
-        if (pq.empty()) {
-            if (time < cows[i].first.first) {
-                time = cows[i].first.first + cows[i].second;
-            } else {
-                pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
-            }
-        } else {
-            if (cows[i].first.first >= time) {
-
-                if (cows[i].first.first == time) {
-                    pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
-                }
-
-                info priority_cow = pq.top();
-                pq.pop();
-
-                int time_waited = time - priority_cow.second;
-                max_waited = max(max_waited, time_waited);
-
-                time += priority_cow.first.second;
-            } else {
-                pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
-            }
+    while (i < N || !pq.empty()) {
+        while (i < N && cows[i].a <= time) {
+            pq.push(cows[i]);
+            i++;
         }
-    }
 
-    while (!pq.empty()) {
-        info priority_cow = pq.top();
+        if (pq.empty()) {
+            time = cows[i].a;
+            continue;
+        }
+
+        Cow curr = pq.top();
         pq.pop();
 
-        int time_waited = time - priority_cow.second;
-        max_waited = max(max_waited, time_waited);
-
-        time += priority_cow.first.second;
+        max_waited = max(max_waited, time - curr.a);
+        time += curr.t;
     }
 
     fout << max_waited << "\n";
