@@ -36,15 +36,34 @@ int main() {
                 pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
             }
         } else {
-            pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
-
             if (cows[i].first.first >= time) {
+
+                if (cows[i].first.first == time) {
+                    pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
+                }
+
                 info priority_cow = pq.top();
                 pq.pop();
 
                 int time_waited = time - priority_cow.second;
                 max_waited = max(max_waited, time_waited);
+
+                time += priority_cow.first.second;
+            } else {
+                pq.push(make_pair(make_pair(cows[i].first.second, cows[i].second), cows[i].first.first));
             }
         }
     }
+
+    while (!pq.empty()) {
+        info priority_cow = pq.top();
+        pq.pop();
+
+        int time_waited = time - priority_cow.second;
+        max_waited = max(max_waited, time_waited);
+
+        time += priority_cow.first.second;
+    }
+
+    fout << max_waited << "\n";
 }
