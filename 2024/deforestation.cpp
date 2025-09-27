@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 using namespace std;
 
@@ -40,27 +41,43 @@ int main() {
             }
         });
 
-        int total_cut = 0;
         int idx = 0;
-        priority_queue<Restriction, vector<Restriction>, greater<Restriction>> pq;
-        vector<int> kept;
+        set<int> kept;
 
         for (int i = 0; i < N; i++) {
-            restrictions[i] 
+            priority_queue<int> pq;
+            Restriction curr_restriction = restrictions[i];
+
+            // Binary search to find trees less than curr_restriction.r
+
+            int lo = 0;
+            int hi = N - 1;
+
+            while (lo < hi) {
+                int mid = lo + (hi - lo)/2 + 1;
+                if (trees[mid] > curr_restriction.r) {
+                    hi = mid - 1;
+                } else {
+                    lo = mid;
+                }
+            }
+
+            for (int j = lo; trees[j] >= curr_restriction.l; j--) {
+                if (kept.find(trees[j]) != kept.end()) {
+                    pq.push(trees[j]);
+                } else {
+                    curr_restriction.t--;
+                }
+            }
+
+            while (curr_restriction.t > 0) {
+                int rightmost = pq.top();
+                pq.pop();
+                kept.insert(rightmost);
+                curr_restriction.t--;
+            }
         }
-
-
         
-        //while (idx < N) {
-            /*
-            ALGORITHM:
-            iterate through each tree, and basically ASSIGN the tree to all avaliable restricitons
-            fill the restrictions until the minimum is satisfied
-
-            if there are no restrictions to fill when we have a tree, then increment a count (of trees able to cut down)
-            */
-        //}
-
-        cout << total_cut << "\n";
+        cout << N - kept.size() << "\n";
     }
 }
