@@ -18,6 +18,8 @@ int main() {
     int T;
     cin >> T;
 
+    vector<int> answers;
+
     for (int p = 0; p < T; p++) {
         int N, K;
         cin >> N >> K;
@@ -29,22 +31,23 @@ int main() {
         }
         sort(trees.begin(), trees.end());
 
+
         vector<Restriction> restrictions(K);
         for (int i = 0; i < K; i++) {
             cin >> restrictions[i].l >> restrictions[i].r >> restrictions[i].t;
         }
-        sort(restrictions.begin(), restrictions.end(), [](Restriction& a, Restriction& b){
+        sort(restrictions.begin(), restrictions.end(), [](const Restriction& a, const Restriction& b){
             if (a.r != b.r) {
                 return a.r < b.r;
             } else {
-                return a.l < a.l;
+                return a.l < b.l;
             }
         });
 
-        int idx = 0;
+
         set<int> kept;
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < K; i++) {
             priority_queue<int> pq;
             Restriction curr_restriction = restrictions[i];
 
@@ -62,12 +65,13 @@ int main() {
                 }
             }
 
-            for (int j = lo; trees[j] >= curr_restriction.l; j--) {
-                if (kept.find(trees[j]) != kept.end()) {
-                    pq.push(trees[j]);
-                } else {
+            while (trees[lo] >= curr_restriction.l) {
+                if (kept.find(trees[lo]) != kept.end()) {
                     curr_restriction.t--;
+                } else {
+                    pq.push(trees[lo]);
                 }
+                lo--;
             }
 
             while (curr_restriction.t > 0) {
@@ -77,7 +81,10 @@ int main() {
                 curr_restriction.t--;
             }
         }
-        
-        cout << N - kept.size() << "\n";
+
+        answers.push_back(N - kept.size());
+    }
+    for (int i = 0; i < T; i++) {
+        cout << answers[i] << "\n";
     }
 }
