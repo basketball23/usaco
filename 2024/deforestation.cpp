@@ -65,7 +65,7 @@ int main() {
                 }
             }
 
-            while (trees[lo] >= curr_restriction.l) {
+            while (lo >= 0 && trees[lo] >= curr_restriction.l) {
                 if (kept.find(trees[lo]) != kept.end()) {
                     curr_restriction.t--;
                 } else {
