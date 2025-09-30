@@ -38,37 +38,49 @@ int main() {
         }
         sort(restrictions.begin(), restrictions.end(), [](const Restriction& a, const Restriction& b){
             if (a.r != b.r) {
-                return a.r < b.r;
+                return a.r > b.r;
             } else {
-                return a.t > b.t;
+                return a.l > b.l;
             }
         });
 
 
         int cut = 0;
         priority_queue<int, vector<int>, greater<int>> pq;
-        int ptr = 0;
+        int ptr = N - 1;
 
-        // Iterate over each restriction
+        // Iterate over each restriction from right to left
         // Keep a pointer on the trees, and add them to pq while they're less than restriction.r
         // Then, pop from pq (min-heap) while pq.top < restriction.l
         // Then, cut/pop until pq.size() = t.
         // Count how many cut
 
-        for (int i = 1; i < K; i++) {
-            Restriction prev_restriction = restrictions[i - 1];
+        for (int i = 0; i < K; i++) {
             Restriction curr_restriction = restrictions[i];
 
 
-            while (ptr < N && trees[ptr] <= curr_restriction.r) {
-                pq.push(trees[ptr]);
-                ptr++;
+            while (ptr >= 0 && trees[ptr] > curr_restriction.r) {
+                cut++;
+                ptr--;
             }
 
-            while (pq.top() < prev_restriction.l || pq.size() > prev_restriction.t) {
+            int kept = 0;
+            int up_ptr = ptr;
+            while (up_ptr < N && trees[up_ptr] <= curr_restriction.r) {
+                kept++;
+                up_ptr++;
+            }
+            while (ptr >= 0 && kept < curr_restriction.t) {
+                kept++;
+                ptr--;
+            }
+
+            /*
+            while (pq.top() < curr_restriction.l || pq.size() > curr_restriction.t) {
                 pq.pop();
                 cut++;
             }
+            */
         }
 
         answers.push_back(cut);
