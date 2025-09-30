@@ -40,49 +40,38 @@ int main() {
             if (a.r != b.r) {
                 return a.r < b.r;
             } else {
-                return a.l < b.l;
+                return a.t > b.t;
             }
         });
 
 
-        set<int> kept;
+        int cut = 0;
+        priority_queue<int, vector<int>, greater<int>> pq;
+        int ptr = 0;
 
-        for (int i = 0; i < K; i++) {
-            priority_queue<int> pq;
+        // Iterate over each restriction
+        // Keep a pointer on the trees, and add them to pq while they're less than restriction.r
+        // Then, pop from pq (min-heap) while pq.top < restriction.l
+        // Then, cut/pop until pq.size() = t.
+        // Count how many cut
+
+        for (int i = 1; i < K; i++) {
+            Restriction prev_restriction = restrictions[i - 1];
             Restriction curr_restriction = restrictions[i];
 
-            // Binary search to find trees less than curr_restriction.r
 
-            int lo = 0;
-            int hi = N - 1;
-
-            while (lo < hi) {
-                int mid = lo + (hi - lo)/2 + 1;
-                if (trees[mid] > curr_restriction.r) {
-                    hi = mid - 1;
-                } else {
-                    lo = mid;
-                }
+            while (ptr < N && trees[ptr] <= curr_restriction.r) {
+                pq.push(trees[ptr]);
+                ptr++;
             }
 
-            while (lo >= 0 && trees[lo] >= curr_restriction.l) {
-                if (kept.find(trees[lo]) != kept.end()) {
-                    curr_restriction.t--;
-                } else {
-                    pq.push(trees[lo]);
-                }
-                lo--;
-            }
-
-            while (curr_restriction.t > 0) {
-                int rightmost = pq.top();
+            while (pq.top() < prev_restriction.l || pq.size() > prev_restriction.t) {
                 pq.pop();
-                kept.insert(rightmost);
-                curr_restriction.t--;
+                cut++;
             }
         }
 
-        answers.push_back(N - kept.size());
+        answers.push_back(cut);
     }
     for (int i = 0; i < T; i++) {
         cout << answers[i] << "\n";
