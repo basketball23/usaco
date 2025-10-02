@@ -1,18 +1,20 @@
 #include <iostream>
 #include <vector>
-#include <limits>
+
 using namespace std;
 
-vector<int> psum(vector<int> nums) {
+vector<long long> psum(const vector<int>& nums) {
     /*
     simple function to calculate the prefix sum of a given array
     */
 
-    int sum = 0;
-    vector<int> prefixSumArray(nums.size());
+    long long sum = 0;
+    vector<long long> prefixSumArray(nums.size() + 1);
 
-    for (int j = 0; j < nums.size(); j++) {
-        sum += nums[j];
+    prefixSumArray[0] = 0;
+
+    for (int j = 1; j <= nums.size(); j++) {
+        sum += nums[j - 1];
         prefixSumArray[j] = sum;
     }
 
@@ -20,37 +22,44 @@ vector<int> psum(vector<int> nums) {
 }
 
 int main() {
-    int n, max_sum = numeric_limits<int>::min();
+    int n;
     cin >> n;
 
-    vector<int> array;
-
-    array.assign(n, 0);
+    vector<int> array(n);
 
     for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-        array[i] = x;
+        cin >> array[i];
     }
 
-    int left = 0, right = array.size() - 1;
+    vector<long long> prefixSum = psum(array);
 
-    while (left <= right) {
-        int current_sum = 0;
-        for (int i = left; i <= right; i++) {
-            current_sum += array[i];
-        }
+    /*
+    for (int i = 0; i <= n; i++) {
+        cout << prefixSum[i] << " ";
+    }
+    cout << "\n";
+    */
+    
+
+
+    long long max_sum = prefixSum[n];
+
+    int left = 0, right = n;
+
+    while (left < right) {
+        long long current_sum = prefixSum[right] - prefixSum[left];
+        //cout << current_sum << " ";
+
         if (current_sum > max_sum) {
             max_sum = current_sum;
         }
 
-        if (array[left] > array[right]) {
-            right--;
-        } else {
+        if (prefixSum[right] - prefixSum[left + 1] > prefixSum[right - 1] - prefixSum[left]) {
             left++;
+        } else {
+            right--;
         }
     }
 
-    cout << max_sum;
-
+    cout << max_sum << "\n";
 }
