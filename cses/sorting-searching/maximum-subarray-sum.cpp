@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -22,6 +24,8 @@ vector<long long> psum(const vector<int>& nums) {
 }
 
 int main() {
+    cin.tie(nullptr)->sync_with_stdio(false);
+
     int n;
     cin >> n;
 
@@ -33,32 +37,14 @@ int main() {
 
     vector<long long> prefixSum = psum(array);
 
-    /*
-    for (int i = 0; i <= n; i++) {
-        cout << prefixSum[i] << " ";
-    }
-    cout << "\n";
-    */
-    
-
 
     long long max_sum = prefixSum[n];
+    long long min_prefix = prefixSum[0];
 
-    int left = 0, right = n;
 
-    while (left < right) {
-        long long current_sum = prefixSum[right] - prefixSum[left];
-        //cout << current_sum << " ";
-
-        if (current_sum > max_sum) {
-            max_sum = current_sum;
-        }
-
-        if (prefixSum[right] - prefixSum[left + 1] > prefixSum[right - 1] - prefixSum[left]) {
-            left++;
-        } else {
-            right--;
-        }
+    for (int i = 1; i <= n; i++) {
+        max_sum = max(max_sum, prefixSum[i] - min_prefix);
+        min_prefix = min(min_prefix, prefixSum[i]);
     }
 
     cout << max_sum << "\n";
