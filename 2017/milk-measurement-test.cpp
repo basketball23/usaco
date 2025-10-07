@@ -16,6 +16,8 @@ struct Measurement {
 };
 
 int main() {
+    cin.tie(nullptr)->sync_with_stdio(false);
+
     ifstream fin("measurement.in");
     ofstream fout("measurement.out");
 
@@ -24,7 +26,10 @@ int main() {
 
 
     vector<Measurement> measurements(N);
-    for (int i = 0; i < N; i++) {fin >> measurements[i].day >> measurements[i].id >> measurements[i].chg;}
+    for (int i = 0; i < N; i++) {
+        fin >> measurements[i].day >> measurements[i].id >> measurements[i].chg;
+    }
+
     sort(measurements.begin(), measurements.end(), [](Measurement& a, Measurement& b) {
         return a.day < b.day;
     });
@@ -32,7 +37,7 @@ int main() {
     int adjustions = 0;
 
 
-    unordered_map<int, int> map;
+    unordered_map<int, int> milk;
     set<int> prev_on_wall;
     set<int> prev_not_on;
 
@@ -43,13 +48,13 @@ int main() {
         priority_queue<pair<int, int>> pq;
         Measurement curr = measurements[i];
 
-        if (map.find(curr.id) == map.end()) {
-            map[curr.id] = G + curr.chg;
+        if (milk.find(curr.id) == milk.end()) {
+            milk[curr.id] = G + curr.chg;
         } else {
-            map[curr.id] += curr.chg;
+            milk[curr.id] += curr.chg;
         }
         
-        for (const auto& pair : map) {
+        for (const auto& pair : milk) {
             pq.push(make_pair(pair.second, pair.first));
         }
 
@@ -58,7 +63,7 @@ int main() {
         pq.pop();
 
         if (top.first == G) {
-            while (pq.top().first == G) {
+            while (!pq.empty() && pq.top().first == G) {
                 pq.pop();
             }
             while (!pq.empty()) {
@@ -68,7 +73,7 @@ int main() {
 
         } else if (top.first > G) {
             on_wall.insert(top.second);
-            while (pq.top().first == top.first) {
+            while (!pq.empty() && pq.top().first == top.first) {
                 on_wall.insert(pq.top().second);
                 pq.pop();
             }
@@ -80,7 +85,7 @@ int main() {
         }
 
 
-        if (on_wall == prev_on_wall || not_on == prev_not_on) {
+        if (on_wall != prev_on_wall || not_on != prev_not_on) {
             adjustions++;
         }
         
