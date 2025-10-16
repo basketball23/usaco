@@ -1,9 +1,11 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int ask(string q, int a, int b) {
-    cout << q << " " << a << " " << b;
+    cout << q << " " << a << " " << b << endl;
     fflush(stdout);
 
     int res;
@@ -13,7 +15,7 @@ int ask(string q, int a, int b) {
 }
 
 int sum(int a, int b) {
-    int and_ = ask("and", a, b);
+    int and_ = ask("and", ++a, ++b);
     int or_ = ask("or", a, b);
 
     int xor_ = ~and_ & or_;
@@ -40,8 +42,16 @@ int main() {
     arr.push_back(c);
 
     for (int i = 3; i < n; i++) {
-        
+        int next = sum(0, i);
+
+        int x = next - a;
+
+        arr.push_back(x);
     }
+
+    sort(arr.begin(), arr.end());
+
+    cout << "finish" << " " << arr[k - 1] << "\n";
 
     // Use AND and XOR operators to find sum of elements
     // & bitwise AND
