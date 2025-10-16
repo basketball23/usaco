@@ -16,15 +16,10 @@ int main() {
     int total_sum = 0;
 
     for (int i = 0; i < N - 1; i++) {
-        for (int j = 1; j < N; j++) {
-            int idx = i + 1;
+        int xor_chain = arr[i];
 
-            int xor_chain = arr[i];
-
-            while (idx <= j) {
-                xor_chain ^= arr[idx];
-                idx++;
-            }
+        for (int j = i + 1; j < N; j++) {
+            xor_chain ^= arr[j];
 
             total_sum += xor_chain;
         }
