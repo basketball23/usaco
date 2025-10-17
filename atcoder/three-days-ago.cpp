@@ -1,41 +1,32 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
 int main() {
     string S;
     cin >> S;
+    int n = S.size();
 
-    // Maybe bitwise again?
+    // frequency of prefix parity states (stores counts)
+    unordered_map<int, long long> freq;
+    freq[0] = 1;  // empty prefix has even counts of all digits
 
+    // uses a bitmask to keep track of occurence parity
+    int mask = 0;
+    long long ans = 0;
 
-    // iterate through the string, and do bitwise stuff at each character?
+    for (char c : S) {
+        int digit = c - '0';
+        mask ^= (1 << digit);  // flip bit for that digit
 
-    // USE PROPERTY THAT TWO NUMBERS WILL XOR EACH OTHER OUT IF THEY'RE THE SAME
-    int ans = 0;
-    int s = 0;
-    vector<int> prefOdd = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    vector<int> prefEven = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // count how many previous prefixes had same mask
+        ans += freq[mask];
 
-    for (int i = 0; i < S.size(); i++) {
-        int digit = S[i] - '0';
-
-        s ^= digit;
-
-        if ((i + 1) % 2 == 0) {
-            //cout << "debug :" << "digit: " << digit << " " << prefEven[s] << " " << s << "\n";
-            ans += prefEven[s];
-
-            prefEven[s]++;
-        } else {
-            //cout << "debug :" << "digit: " << digit << " " << prefOdd[s] << " " << s << "\n";
-            ans += prefOdd[s];
-
-            prefOdd[s]++;
-        }
+        freq[mask]++;
     }
+
     
     cout << ans << "\n";
 }
