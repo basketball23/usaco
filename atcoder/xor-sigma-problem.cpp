@@ -1,29 +1,31 @@
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 using namespace std;
 
 int main() {
-    int N;
-    cin >> N;
-
-    vector<int> arr(N);
-
-    for (int i = 0; i < N; i++) {
-        cin >> arr[i];
+	int n;
+	cin >> n;
+	vector<int> v(n);
+	for (int &a : v) { 
+        cin >> a;
     }
 
-    int total_sum = 0;
+	long long ans = -accumulate(v.begin(), v.end(), 0LL);
 
-    for (int i = 0; i < N - 1; i++) {
-        int xor_chain = arr[i];
+	for (int i = 0; i < 30; i++) {
+		int s = 0;
+		vector<int> pref = {1, 0};
 
-        for (int j = i + 1; j < N; j++) {
-            xor_chain ^= arr[j];
+		for (int a : v) {
+			s ^= (a >> i) & 1;
 
-            total_sum += xor_chain;
-        }
-    }
+			ans += pref[s ^ 1] * 1LL << i;
 
-    cout << total_sum << "\n";
+			pref[s]++;
+		}
+	}
+
+	cout << ans << endl;
 }
