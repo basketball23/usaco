@@ -11,25 +11,29 @@ int main() {
     int k;
     cin >> n >> k;
 
-    vector<int> primes(k);
+    vector<long long> primes(k);
     for (int i = 0; i < k; i++) {
         cin >> primes[i];
     }
 
-    set<int> answers;
+    long long ans = 0;
 
+    // First pass
     for (int i = 0; i < k; i++) {
-        int p = primes[i];
-
-        while (p < n) {
-            answers.insert(p);
-            p += p;
-        }
+        long long multiples = n / primes[i];
+        ans += multiples;
     }
 
-    cout << answers.size() << "\n";
+    // Second pass to get rid of duplicates
+    for (int i = 0; i < k; i++) {
+        long long duplicates = 0;
+        for (int j = i + 1; j < k; j++) {
+            duplicates += n / (primes[i] * primes[j]);
+        }
+        ans -= duplicates;
+    }
 
-
+    cout << ans << "\n";
 
     // If a number is a multiple of another, the pattern of the on bits must match pattern of the on bits of the divisor?
     // Ex. 110 (6) is divisible by 11 (3)
