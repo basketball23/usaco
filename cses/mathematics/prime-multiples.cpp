@@ -1,18 +1,34 @@
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
 int main() {
     cin.tie(nullptr)->sync_with_stdio(false);
 
-    int n, k;
+    long long n;
+    int k;
     cin >> n >> k;
 
     vector<int> primes(k);
     for (int i = 0; i < k; i++) {
         cin >> primes[i];
     }
+
+    set<int> answers;
+
+    for (int i = 0; i < k; i++) {
+        int p = primes[i];
+
+        while (p < n) {
+            answers.insert(p);
+            p += p;
+        }
+    }
+
+    cout << answers.size() << "\n";
+
 
 
     // If a number is a multiple of another, the pattern of the on bits must match pattern of the on bits of the divisor?
